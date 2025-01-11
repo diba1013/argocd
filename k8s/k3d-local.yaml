@@ -1,0 +1,28 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+
+metadata:
+  name: local
+
+servers: 1
+agents: 3
+
+ports:
+  - port: 80:80
+    nodeFilters:
+      - loadbalancer
+
+registries:
+  create:
+    name: registry.localhost
+    host: 0.0.0.0
+    hostPort: "5000"
+    volumes:
+      - "$PWD/k8s/data/registry:/var/lib/registry"
+
+options:
+  k3s:
+    extraArgs:
+      - arg: --tls-san=cluster.local
+        nodeFilters:
+          - server:*
