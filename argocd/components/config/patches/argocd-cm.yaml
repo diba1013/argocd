@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+data:
+  url: https://argocd.local
+
+  ui.bannercontent: This instance is not configured for production use.
+  ui.bannerpermanent: "true"
+  ui.bannerposition: top
+  ui.cssurl: ./custom/styles.css
+
+  accounts.gitops: login, apiKey
+  accounts.gitops.enabled: "true"

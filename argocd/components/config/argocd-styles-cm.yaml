@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-styles-cm
+data:
+  theme.css: |
+    .theme-light {
+      --banner-background-color: #D4D4D4;
+      --banner-color: #4B4B4B;
+    }
+
+    .theme-dark {
+      --banner-background-color: #4B4B4B;
+      --banner-color: #D4D4D4;
+    }
+
+  styles.css: |
+    @import "./theme.css";
+
+    .ui-banner {
+      background-color: var(--banner-background-color);
+      color: var(--banner-color);
+    }
+
+    .ui-banner-top {
+      border-bottom: 2px solid currentColor;
+    }
+
+    .ui-banner-bottom {
+      border-top: 2px solid currentColor;
+    }
+
+    .ui-banner-text {
+      font-size: 14px;
+    }

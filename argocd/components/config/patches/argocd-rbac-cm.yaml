@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+data:
+  policy.csv: |
+    g, gitops, role:admin
+    g, gitops, role:gitops
+    p, role:gitops, *, *, */*, allow
+  policy.default: role:readonly
