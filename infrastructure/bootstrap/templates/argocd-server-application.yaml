@@ -3,7 +3,7 @@ kind: Application
 metadata:
   name: argocd-server
   metadata:
-    labels:
+    annotations:
       argocd.argoproj.io/sync-wave: "-2"
 spec:
   project: default
