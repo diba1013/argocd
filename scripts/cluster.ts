@@ -71,7 +71,7 @@ const commands: Commands = {
 		const token = await read({ prompt: `Enter a PAT (${remote}): `, silent: true });
 
 		const hostUrl = remote.replace(GIT_REMOTE_URL_REGEX, "https://$1/$2");
-		await $$`argocd repo add ${hostUrl} \
+		await $$`argocd repocreds add ${hostUrl} \
 				--username ${username} \
 				--password ${token}`;
 		echo("✓ Repository credentials added");
@@ -79,7 +79,7 @@ const commands: Commands = {
 		// 5. Setup applications
 		echo("Setting up applications...");
 		const repositoryUrl = remote.replace(GIT_REMOTE_URL_REGEX, "https://$1/$2/$3");
-		await $`kubectl apply -f ./infrastructure/bootstrap/templates/bootstrap-application.yaml`;
+		await $`helm template --namespace argocd infrastructure/bootstrap -s templates/boostrap-application.yaml -f infrastructure/bootstrap/values.yaml --set environment=local | kubectl apply -f -`;
 		await $`argocd app set bootstrap \
 				--parameter repository.url=${repositoryUrl} \
 				--parameter environment=${environment}`;

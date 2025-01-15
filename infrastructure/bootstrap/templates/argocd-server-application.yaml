@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: {{ .Values.repository.url }}
-    path: {{ printf "infrastructure/argocd/overlays/%s" .Values.argocd.overlay }}
+    path: {{ printf "infrastructure/argocd/overlays/%s" .Values.environment }}
     targetRevision: {{ .Values.repository.branch }}
   destination:
     server: {{ .Values.cluster.server }}

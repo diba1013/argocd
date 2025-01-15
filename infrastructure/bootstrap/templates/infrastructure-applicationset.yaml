@@ -3,6 +3,8 @@ kind: ApplicationSet
 metadata:
   name: infrastructure-applicationset
 spec:
+  goTemplate: true
+  goTemplateOptions: [missingkey=error]
   generators:
     - git:
         repoURL: {{ .Values.repository.url }}
@@ -12,12 +14,12 @@ spec:
   template:
     metadata:
       labels:
-        name: '{{ path.basename }}'
+        name: '{{ `{{ .path.basename }}` }}'
     spec:
       project: operator
       source:
         repoURL: {{ .Values.repository.url }}
-        path: '{{ path.basename }}'
+        path: '{{ `{{ .path.basename }}` }}'
         targetRevision: {{ .Values.repository.branch }}
         helm:
           ignoreMissingValueFiles: true
@@ -26,7 +28,7 @@ spec:
             - values.{{ .Values.environment }}.yaml
       destination:
         server: {{ .Values.cluster.server }}
-        namespace: '{{ path.basename }}'
+        namespace: '{{ `{{ .path.basename }}` }}'
       syncPolicy:
         automated:
           prune: true

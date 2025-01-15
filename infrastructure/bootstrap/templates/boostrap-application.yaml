@@ -12,7 +12,7 @@ spec:
     targetRevision: {{ .Values.repository.branch }}
     helm:
       ignoreMissingValueFiles: true
-      valuesFiles:
+      valueFiles:
         - values.yaml
         - values.{{ .Values.environment }}.yaml
   destination:
