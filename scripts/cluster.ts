@@ -78,7 +78,7 @@ const commands: Commands = {
 
 		// 5. Setup applications
 		echo("Setting up applications...");
-		const repositoryUrl = remote.replace(GIT_REMOTE_URL_REGEX, "https://$1/$2/$3");
+		const repositoryUrl = remote.replace(GIT_REMOTE_URL_REGEX, "https://$1/$2/$3.git");
 		await $`helm template --namespace argocd infrastructure/bootstrap -s templates/boostrap-application.yaml -f infrastructure/bootstrap/values.yaml --set environment=local | kubectl apply -f -`;
 		await $`argocd app set bootstrap \
 				--parameter repository.url=${repositoryUrl} \

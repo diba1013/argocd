@@ -4,5 +4,5 @@ cluster:
   server: https://kubernetes.default.svc
 
 repository:
-  url: https://github.com/diba1013/argocd-config
+  url: https://github.com/diba1013/argocd-config.git
   branch: main
