@@ -5,9 +5,13 @@ export default defineConfig({
 	typescript: "./tsconfig.json",
 	configs: [
 		{
-			files: ["scripts/**/*.ts"],
+			files: ["infrastructure/*/templates/*.yaml", "k8s/charts/*/templates/*.yaml"],
 			rules: {
-				"@typescript-eslint/no-unsafe-call": "off",
+				/**
+				 * Do not complain about go templating not evaluating to a value.
+				 * https://ota-meshi.github.io/eslint-plugin-yml/rules/no-empty-mapping-value.html
+				 */
+				"yml/no-empty-mapping-value": "off",
 			},
 		},
 	],

@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: infrastructure-applicationset
+spec:
+  generators:
+    - git:
+        repoURL: {{ .Values.repository.url }}
+        revision: {{ .Values.repository.branch }}
+        directories:
+          - path: k3s/charts/*
+  template:
+    metadata:
+      labels:
+        name: '{{ path.basename }}'
+    spec:
+      project: operator
+      source:
+        repoURL: {{ .Values.repository.url }}
+        path: '{{ path.basename }}'
+        targetRevision: {{ .Values.repository.branch }}
+        helm:
+          ignoreMissingValueFiles: true
+          valuesFiles:
+            - values.yaml
+            - values.{{ .Values.environment }}.yaml
+      destination:
+        server: {{ .Values.cluster.server }}
+        namespace: '{{ path.basename }}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - Prune=true
+          - PruneLast=true

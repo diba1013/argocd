@@ -1,0 +1,11 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: operator
+spec:
+  description: A basic AppProject for ArgoCD
+  sourceRepos:
+    - "*"
+  destinations:
+    - server: {{ .Values.cluster.server }}
+      namespace: "*"

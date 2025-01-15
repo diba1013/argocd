@@ -1,0 +1,11 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: service
+spec:
+  description: Configure service applications.
+  sourceRepos:
+    - "https://github.com/*"
+  destinations:
+    - server: {{ .Values.cluster.server }}
+      namespace: "*"

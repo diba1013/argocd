@@ -1,6 +1,8 @@
 #!/usr/bin/env -S NODE_OPTIONS="--no-warnings" zx
 import { read } from "read";
-import { $, echo, minimist, path } from "zx";
+import { $, echo, minimist, path, question } from "zx";
+
+const GIT_REMOTE_URL_REGEX = /^(?:git@(.+):(.+)\/(.+)|https?:\/\/(.+?)\/(.+)\/(.+))\.git$/;
 
 // We need to remove the first two arguments because of the shebang handling.
 const { _: parameters } = minimist(process.argv.slice(3));
@@ -18,58 +20,93 @@ type Commands = Record<string, CommandAction | undefined>;
 
 const commands: Commands = {
 	init: async () => {
-		// Ensure that the cluster is created fresh.
+		// 1. Ask for the overlay name to determine the ArgoCD configuration to use.
+		echo("Setting up cluster...");
+		const environments = await $`ls infrastructure/argocd/overlays`;
+		const environment = await question("Enter the environment name: ", { choices: environments.lines() });
+
 		await $`k3d cluster delete local`.nothrow();
 		await $`k3d cluster create --config ./k8s/k3d-local.yaml`;
 
-		// Bootstrap the ArgoCD instance and wait for it to be ready.
+		// 2. Install and configure ArgoCD.
+		echo("Installing ArgoCD...");
 		await $`kubectl create namespace argocd`;
-		await $`kubectl apply -k ./argocd/overlays/local/`;
+		await $`kubectl apply -k ./infrastructure/argocd/overlays/${environment}/`;
 		await $`kubectl wait --for=condition=available deployment/argocd-server -n argocd --timeout=300s`;
 
-		echo("Finishing last steps for ArgoCD...");
-		// Read the initial password from the ArgoCD instance.
+		// 3. Setup login credentials.
+		echo("Setting up ArgoCD credentials...");
 		const initialPasswordOutput = await $$`argocd admin initial-password -n argocd`;
 		const password = initialPasswordOutput.lines()[0].trim();
-		// Login to the ArgoCD instance using the initial password.
+
 		await $$`argocd --grpc-web --insecure --plaintext login argocd.localhost \
 				--username admin \
-				--password ${password} \
-			`;
-		// Update admin password using the initial password to ensure that it cannot be used anymore.
+				--password ${password}`;
+
 		const newAdminPassword = await read({ prompt: "Enter a new admin password: ", silent: true });
 		await $$`argocd --grpc-web --insecure --plaintext account update-password \
 				--account admin \
 				--current-password ${password} \
-				--new-password ${newAdminPassword}
-			`;
-		echo("Admin password updated.");
-		// Update user password using the new admin password since we are authenticated as admin.
+				--new-password ${newAdminPassword}`;
+		echo("✓ Admin password updated");
+
 		const newUserPassword = await read({ prompt: "Enter a new user password: ", silent: true });
 		await $$`argocd --grpc-web --insecure --plaintext account update-password \
 				--account gitops \
 				--current-password ${newAdminPassword} \
-				--new-password ${newUserPassword}
-			`;
-		echo("User password updated.");
-		// Login with the new user that essentially has the same permissions as the admin.
+				--new-password ${newUserPassword}`;
+		echo("✓ User password updated");
+
 		await $$`argocd --grpc-web --insecure --plaintext login argocd.localhost \
 				--username gitops \
-				--password ${newUserPassword}
-			`;
-		echo("ArgoCD is ready to use.");
+				--password ${newUserPassword}`;
+
+		// 4. Setup git credentials for private repositories.
+		echo("Setting up repository credentials...");
+		const remoteOutput = await $$`git config remote.origin.url`;
+		const [remote] = remoteOutput.lines();
+		const usernameOutput = await $$`git config user.name`;
+		const [username] = usernameOutput.lines();
+
+		const token = await read({ prompt: `Enter a PAT (${remote}): `, silent: true });
+
+		const hostUrl = remote.replace(GIT_REMOTE_URL_REGEX, "https://$1/$2");
+		await $$`argocd repo add ${hostUrl} \
+				--username ${username} \
+				--password ${token}`;
+		echo("✓ Repository credentials added");
+
+		// 5. Setup applications
+		echo("Setting up applications...");
+		const repositoryUrl = remote.replace(GIT_REMOTE_URL_REGEX, "https://$1/$2/$3");
+		await $`kubectl apply -f ./infrastructure/bootstrap/templates/bootstrap-application.yaml`;
+		await $`argocd app set bootstrap \
+				--parameter repository.url=${repositoryUrl} \
+				--parameter environment=${environment}`;
+
+		echo("✓ Setup complete! ArgoCD is ready to use.");
+		echo("Note: It will take a few minutes for all applications to be deployed.");
 	},
 	start: async () => {
+		echo("Starting cluster...");
 		await $`k3d cluster start local`;
+		echo("✓ Cluster started");
 	},
 	stop: async () => {
+		echo("Stopping cluster...");
 		await $`k3d cluster stop local`;
+		echo("✓ Cluster stopped");
 	},
 };
 
 if (commands[command]) {
-	await commands[command]();
+	try {
+		await commands[command]();
+	} catch (error) {
+		echo(`Command '${command}' failed: ${error instanceof Error ? error.message : "Unknown error"}`);
+		process.exit(1);
+	}
 } else {
-	console.error(`Error: Command '${command}' not found.`);
+	echo(`Error: Command '${command}' not found.`);
 	process.exit(1);
 }

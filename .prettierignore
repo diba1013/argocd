@@ -1,1 +1,4 @@
 pnpm-lock.yaml
+# Ignore all templated helm chart files.
+k8s/**/templates/*.yaml
+infrastructure/**/templates/*.yaml
