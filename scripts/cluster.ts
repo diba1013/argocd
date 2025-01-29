@@ -31,8 +31,10 @@ const commands: Commands = {
 		// 2. Install and configure ArgoCD.
 		echo("Installing ArgoCD...");
 		await $`kubectl create namespace argocd`;
+		await $`kubectl config set-context --current --namespace=argocd`;
 		await $`kubectl apply -k ./infrastructure/argocd/overlays/${environment}/`;
 		await $`kubectl wait --for=condition=available deployment/argocd-server -n argocd --timeout=300s`;
+		await $`kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=argocd-server -n argocd --timeout=300s`;
 
 		// 3. Setup login credentials.
 		echo("Setting up ArgoCD credentials...");
@@ -79,7 +81,7 @@ const commands: Commands = {
 		// 5. Setup applications
 		echo("Setting up applications...");
 		const repositoryUrl = remote.replace(GIT_REMOTE_URL_REGEX, "https://$1/$2/$3.git");
-		await $`helm template --namespace argocd infrastructure/bootstrap -s templates/boostrap-application.yaml -f infrastructure/bootstrap/values.yaml --set environment=local | kubectl apply -f -`;
+		await $`helm template infrastructure/bootstrap -s templates/boostrap-application.yaml -f infrastructure/bootstrap/values.yaml --set environment=local | kubectl apply -f -`;
 		await $`argocd app set bootstrap \
 				--parameter repository.url=${repositoryUrl} \
 				--parameter environment=${environment}`;
