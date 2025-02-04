@@ -15,6 +15,11 @@ ports:
     nodeFilters:
       - loadbalancer
 
+volumes:
+  - volume: "$PWD/k8s/data/storage:/var/lib/rancher/k3s/storage"
+    nodeFilters:
+      - all
+
 registries:
   create:
     name: registry.localhost
