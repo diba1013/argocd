@@ -13,7 +13,7 @@ spec:
     chart: victoria-metrics-k8s-stack
     targetRevision: 0.33.2
     helm:
-      values:
+      values: |
         grafana:
           ingress:
             enabled: true
