@@ -37,10 +37,10 @@ spec:
       kind: Secret
       name: victoria-metrics-operator-validation
       namespace: victoria-metrics
-      jsonParameters:
+      jsonPointers:
         - /data
     - group: admissionregistration.k8s.io
       kind: ValidatingWebhookConfiguration
       name: victoria-metrics-operator-admission
-      jqPathExpression:
+      jqPathExpressions:
         - '.webhooks[]?.clientConfig.caBundle'
