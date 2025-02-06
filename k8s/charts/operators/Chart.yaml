@@ -1,0 +1,4 @@
+apiVersion: v1
+name: argocd-operators
+description: A helm chart to deploy all operator applications via namespaces
+version: 0.1.0

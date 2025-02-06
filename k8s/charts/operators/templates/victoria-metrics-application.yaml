@@ -1,0 +1,46 @@
+apiVersion: argocdproj.io/v1alpha1
+kind: Application
+metadata:
+  name: victoria-metric
+  namespace: argocd
+spec:
+  project: operators
+  destination:
+    server: {{ .Values.cluster.server }}
+    namespace: victoria-metrics
+  source:
+    repoURL: https://victoriametrics.github.io/helm-charts
+    chart: victoria-metrics-k8s-stack
+    targetRevision: 0.33.2
+    helm:
+      values:
+        grafana:
+          ingress:
+            enabled: true
+            hosts:
+              - grafana.localhost
+        prometheus-operator-crds:
+          enabled: true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - Validate=true
+      - PruneLast=true
+      - ApplyOutOfSyncOnly=true
+      - RespectIgnoreDifferences=true
+      - ServerSideApply=true
+  ignoreDifferences:
+    - group: ""
+      kind: Secret
+      name: victoria-metrics-operator-validation
+      namespace: victoria-metrics
+      jsonParameters:
+        - /data
+    - group: admissionregistration.k8s.io
+      kind: ValidatingWebhookConfiguration
+      name: victoria-metrics-operator-admission
+      jqPathExpression:
+        - '.webhooks[]?.clientConfig.caBundle'
