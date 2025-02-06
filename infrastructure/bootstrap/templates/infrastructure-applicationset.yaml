@@ -10,7 +10,7 @@ spec:
         repoURL: {{ .Values.repository.url }}
         revision: {{ .Values.repository.branch }}
         directories:
-          - path: k3s/charts/*
+          - path: k8s/charts/*
   template:
     metadata:
       labels:
