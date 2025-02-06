@@ -13,8 +13,7 @@ spec:
           - path: k8s/charts/*
   template:
     metadata:
-      labels:
-        name: '{{ `{{ .path.basename }}` }}'
+      name: '{{ `{{ .path.basename }}` }}'
     spec:
       project: installer
       source:
