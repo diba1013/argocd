@@ -16,14 +16,14 @@ spec:
       labels:
         name: '{{ `{{ .path.basename }}` }}'
     spec:
-      project: operator
+      project: installer
       source:
         repoURL: {{ .Values.repository.url }}
         path: '{{ `{{ .path.basename }}` }}'
         targetRevision: {{ .Values.repository.branch }}
         helm:
           ignoreMissingValueFiles: true
-          valuesFiles:
+          valueFiles:
             - values.yaml
             - values.{{ .Values.environment }}.yaml
       destination:
