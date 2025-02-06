@@ -4,7 +4,7 @@ metadata:
   name: victoria-metric
   namespace: argocd
 spec:
-  project: operators
+  project: operator
   destination:
     server: {{ .Values.cluster.server }}
     namespace: victoria-metrics
