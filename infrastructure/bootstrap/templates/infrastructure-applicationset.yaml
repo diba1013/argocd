@@ -18,7 +18,7 @@ spec:
       project: installer
       source:
         repoURL: {{ .Values.repository.url }}
-        path: '{{ `{{ .path.basename }}` }}'
+        path: '{{ `{{ .path.path }}` }}'
         targetRevision: {{ .Values.repository.branch }}
         helm:
           ignoreMissingValueFiles: true
