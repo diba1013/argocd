@@ -9,3 +9,6 @@ spec:
   destinations:
     - server: {{ .Values.cluster.server }}
       namespace: "*"
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: Namespace
