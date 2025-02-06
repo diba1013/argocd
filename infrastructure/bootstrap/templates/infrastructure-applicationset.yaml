@@ -33,7 +33,7 @@ spec:
               {{ toYaml .Values.cluster | nindent 14 }}
       destination:
         server: {{ .Values.cluster.server }}
-        namespace: '{{ `{{ .path.basename }}` }}'
+        namespace: argocd
       syncPolicy:
         automated:
           prune: true
