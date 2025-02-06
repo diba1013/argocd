@@ -25,7 +25,7 @@ spec:
           valueFiles:
             - values.yaml
             - values.{{ .Values.environment }}.yaml
-          values:
+          valuesObject:
             environment: {{ .Values.environment }}
             repository:
               {{ toYaml .Values.repository | nindent 14 }}
