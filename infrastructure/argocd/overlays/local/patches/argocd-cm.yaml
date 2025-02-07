@@ -3,4 +3,8 @@ kind: ConfigMap
 metadata:
   name: argocd-cm
 data:
+  # Local changes do not really need to take an effect imemdiately.
+  # If need arises, the engineer can sync manually anyways.
+  timeout.reconciliation: 1h
+  # Make sure that it is visible that we are on a local instance.
   ui.bannercontent: This is a local instance. Feel free to break things.
