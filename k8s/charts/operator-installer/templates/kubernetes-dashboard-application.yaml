@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: victoria-metric
+  name: kubernetes-dashboard
   namespace: argocd
 spec:
   project: operator
   destination:
     server: {{ .Values.cluster.server }}
-    namespace: victoria-metrics
+    namespace: kubernetes-dashboard
   source:
     repoURL: https://kubernetes.github.io/dashboard
     chart: kubernetes-dashboard
