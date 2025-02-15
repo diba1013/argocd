@@ -15,11 +15,12 @@ spec:
     helm:
       values: |
         nameOverride: kubernetes-dashbord
-        ingress:
-          enabled: true
-          useDefaultIngressClass: true
-          hosts:
-            - dashboard.localhost
+        app:
+          ingress:
+            enabled: true
+            useDefaultIngressClass: true
+            hosts:
+              - dashboard.localhost
   syncPolicy:
     automated:
       prune: true
