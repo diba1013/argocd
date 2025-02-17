@@ -28,15 +28,25 @@ const commands: Commands = {
 		await $`k3d cluster delete local`.nothrow();
 		await $`k3d cluster create --config ./k8s/k3d-local.yaml`;
 
-		// 2. Install and configure ArgoCD.
+		// 2. Setup bootstrapping ingres-nginx which will later be taken over by ArgoCD.
+		echo("Installing nginx-ingress...");
+		await $`kubectl create namespace ingress-nginx`;
+		await $`kubectl config set-context --current --namespace=ingress-nginx`;
+		await $`kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0/deploy/static/provider/cloud/deploy.yaml`;
+		await $`kubectl wait --namespace ingress-nginx \
+				--for=condition=ready pod \
+				--selector=app.kubernetes.io/component=controller \
+				--timeout=120s`;
+
+		// 3. Install and configure ArgoCD.
 		echo("Installing ArgoCD...");
 		await $`kubectl create namespace argocd`;
 		await $`kubectl config set-context --current --namespace=argocd`;
 		await $`kubectl apply -k ./infrastructure/argocd/overlays/${environment}/`;
-		await $`kubectl wait --for=condition=available deployment/argocd-server -n argocd --timeout=300s`;
-		await $`kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=argocd-server -n argocd --timeout=300s`;
+		await $`kubectl wait --for=condition=available deployment/argocd-server --namespace argocd --timeout=300s`;
+		await $`kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=argocd-server --namespace argocd --timeout=300s`;
 
-		// 3. Setup login credentials.
+		// 4. Setup login credentials.
 		echo("Setting up ArgoCD credentials...");
 		const initialPasswordOutput = await $$`argocd admin initial-password -n argocd`;
 		const password = initialPasswordOutput.lines()[0].trim();
@@ -63,7 +73,7 @@ const commands: Commands = {
 				--username gitops \
 				--password ${newUserPassword}`;
 
-		// 4. Setup git credentials for private repositories.
+		// 5. Setup git credentials for private repositories.
 		echo("Setting up repository credentials...");
 		const remoteOutput = await $$`git config remote.origin.url`;
 		const [remote] = remoteOutput.lines();
@@ -78,7 +88,7 @@ const commands: Commands = {
 				--password ${token}`;
 		echo("✓ Repository credentials added");
 
-		// 5. Setup applications
+		// 6. Setup applications
 		echo("Setting up applications...");
 		const repositoryUrl = remote.replace(GIT_REMOTE_URL_REGEX, "https://$1/$2/$3.git");
 		await $`helm template infrastructure/bootstrap -s templates/boostrap-application.yaml -f infrastructure/bootstrap/values.yaml --set environment=local | kubectl apply -f -`;

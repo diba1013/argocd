@@ -31,6 +31,9 @@ registries:
 options:
   k3s:
     extraArgs:
+      - arg: --disable=traefik
+        nodeFilters:
+          - server:*
       - arg: "--tls-san=*.localhost"
         nodeFilters:
           - server:*
