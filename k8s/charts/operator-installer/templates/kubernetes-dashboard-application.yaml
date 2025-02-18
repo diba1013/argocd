@@ -14,11 +14,10 @@ spec:
     targetRevision: 7.10.4
     helm:
       values: |
-        nameOverride: kubernetes-dashbord
+        nameOverride: kubernetes-dashboard
         app:
           ingress:
             enabled: true
-            useDefaultIngressClass: true
             hosts:
               - dashboard.localhost
   syncPolicy:
