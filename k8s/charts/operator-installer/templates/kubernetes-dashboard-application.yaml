@@ -18,8 +18,11 @@ spec:
         app:
           ingress:
             enabled: true
+            ingressClassName: nginx
             hosts:
               - dashboard.localhost
+            tls:
+              enabled: false
   syncPolicy:
     automated:
       prune: true
