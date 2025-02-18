@@ -23,6 +23,10 @@ spec:
               - dashboard.localhost
             tls:
               enabled: false
+        kong:
+          admin:
+            tls:
+              enabled: false
   syncPolicy:
     automated:
       prune: true
