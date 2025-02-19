@@ -24,9 +24,10 @@ spec:
             tls:
               enabled: false
         kong:
-          admin:
-            tls:
-              enabled: false
+          env:
+            ADMIN_LISTEN: 127.0.0.1:8444 http2 ssl
+            PROXY_LISTEN: 0.0.0.0:8443 http2 ssl
+            STATUS_LISTEN: 0.0.0.0:8100
   syncPolicy:
     automated:
       prune: true
