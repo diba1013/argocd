@@ -7,7 +7,7 @@ spec:
   project: operator
   destination:
     server: {{ .Values.cluster.server }}
-    namespace: ingress-nginx
+    namespace: keda
   source:
     repoURL: https://kedacore.github.io/charts
     chart: keda
