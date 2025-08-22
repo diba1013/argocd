@@ -1,6 +1,6 @@
 #!/usr/bin/env -S NODE_OPTIONS="--no-warnings" zx
 import { read } from "read";
-import { $, echo, minimist, path, question } from "zx";
+import { $, echo, minimist, path, question, sleep } from "zx";
 
 const GIT_REMOTE_URL_REGEX = /^(?:git@(.+):(.+)\/(.+)|https?:\/\/(.+?)\/(.+)\/(.+))\.git$/;
 
@@ -45,6 +45,7 @@ const commands: Commands = {
 		await $`kubectl apply -k ./infrastructure/argocd/overlays/${environment}/`;
 		await $`kubectl wait --for=condition=available deployment/argocd-server --namespace argocd --timeout=300s`;
 		await $`kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=argocd-server --namespace argocd --timeout=300s`;
+		await sleep(`10s`);
 
 		// 4. Setup login credentials.
 		echo("Setting up ArgoCD credentials...");
