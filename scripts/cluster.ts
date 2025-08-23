@@ -32,7 +32,10 @@ const commands: Commands = {
 		echo("Installing nginx-ingress...");
 		await $`kubectl create namespace ingress-nginx`;
 		await $`kubectl config set-context --current --namespace=ingress-nginx`;
-		await $`kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0/deploy/static/provider/cloud/deploy.yaml`;
+		// We need to remove the namespace as otherwise ArgoCD will trigger a namespace deltion as the namespace is not part of the helm chart.
+		await $`curl -s https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.13.1/deploy/static/provider/cloud/deploy.yaml | yq eval 'select(.kind != "Namespace")' - | kubectl apply -f -`;
+		// Properly wait until the controller is up to ensure that the certificates are created.
+		// See: https://kubernetes.github.io/ingress-nginx/deploy/#certificate-generation
 		await $`kubectl wait --namespace ingress-nginx \
 				--for=condition=ready pod \
 				--selector=app.kubernetes.io/component=controller \
@@ -47,12 +50,14 @@ const commands: Commands = {
 		await $`kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=argocd-server --namespace argocd --timeout=300s`;
 		await sleep(`10s`);
 
+		const server = "argocd.localhost";
+
 		// 4. Setup login credentials.
 		echo("Setting up ArgoCD credentials...");
 		const initialPasswordOutput = await $$`argocd admin initial-password -n argocd`;
 		const password = initialPasswordOutput.lines()[0].trim();
 
-		await $$`argocd --grpc-web --insecure --plaintext login argocd.localhost \
+		await $$`argocd --grpc-web --insecure --plaintext login ${server} \
 				--username admin \
 				--password ${password}`;
 
@@ -70,7 +75,7 @@ const commands: Commands = {
 				--new-password ${newUserPassword}`;
 		echo("✓ User password updated");
 
-		await $$`argocd --grpc-web --insecure --plaintext login argocd.localhost \
+		await $$`argocd --grpc-web --insecure --plaintext login ${server} \
 				--username gitops \
 				--password ${newUserPassword}`;
 
@@ -96,6 +101,11 @@ const commands: Commands = {
 		await $`argocd app set bootstrap \
 				--parameter repository.url=${repositoryUrl} \
 				--parameter environment=${environment}`;
+
+		// Wait for ArgoCD to take over application synchronization.
+		await $`argocd app wait --sync bootstrap`;
+		await $`argocd app wait --sync operator-installer`;
+		await $`argocd app wait --sync ingress-nginx`;
 
 		echo("✓ Setup complete! ArgoCD is ready to use.");
 		echo("Note: It will take a few minutes for all applications to be deployed.");
