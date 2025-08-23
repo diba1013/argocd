@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-repo-server
+  namespace: argocd
+spec:
+  template:
+    spec:
+      initContainers:
+        - name: argocd-repo-server-plugin-node
+          # Wait until argocd-cmp-server is present as file and then boot
+          command:
+            - bash
+            - -c
+            - "until [ -f /var/run/argocd/argocd-cmp-server ]; do sleep 1; done; exec /var/run/argocd/argocd-cmp-server"
+          image: "library/node:24"
+          restartPolicy: Always
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 999
+          volumeMounts:
+            - mountPath: /var/run/argocd
+              name: var-files
+            - mountPath: /home/argocd/cmp-server/plugins
+              name: plugins
+            # Remove this volumeMount if you've chosen to bake the config file into the sidecar image.
+            - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+              subPath: plugin.yaml
+              name: argocd-plugin-node
+            # Starting with v2.4, do NOT mount the same tmp volume as the repo-server container. The filesystem separation helps
+            # mitigate path traversal attacks.
+            - mountPath: /tmp
+              name: argocd-plugin-node-tmp
+      volumes:
+        - configMap:
+            name: argocd-plugin-node
+          name: argocd-plugin-node
+        - emptyDir: {}
+          name: argocd-plugin-node-tmp

@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: services-installer
+spec:
+  goTemplate: true
+  goTemplateOptions: [missingkey=error]
+  generators:
+    - git:
+        repoURL: {{ .Values.repository.url }}
+        revision: {{ .Values.repository.branch }}
+        directories:
+          - path: services/*
+  template:
+    metadata:
+      name: '{{ `{{ .path.basename }}` }}'
+    spec:
+      project: installer
+      source:
+        repoURL: {{ .Values.repository.url }}
+        path: '{{ `{{ .path.path }}` }}'
+        targetRevision: {{ .Values.repository.branch }}
+        plugin: {}
+      destination:
+        server: {{ .Values.cluster.server }}
+        namespace: argocd
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+          - Prune=true
+          - PruneLast=true

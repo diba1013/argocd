@@ -9,6 +9,7 @@ resources:
 
 components:
   - ../../components/config/
+  - ../../components/plugins/
 
 patches:
   - path: patches/argocd-cm-params-cm.yaml
