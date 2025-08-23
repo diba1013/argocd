@@ -19,9 +19,6 @@ spec:
           ingressClassResource:
             default: true
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
     syncOptions:
       - CreateNamespace=true
       - Validate=true
