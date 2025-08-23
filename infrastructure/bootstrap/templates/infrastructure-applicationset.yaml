@@ -28,9 +28,9 @@ spec:
           valuesObject:
             environment: {{ .Values.environment }}
             repository:
-              {{ toYaml .Values.repository | nindent 14 }}
+              {{- toYaml .Values.repository | nindent 14 }}
             cluster:
-              {{ toYaml .Values.cluster | nindent 14 }}
+              {{- toYaml .Values.cluster | nindent 14 }}
       destination:
         server: {{ .Values.cluster.server }}
         namespace: argocd
