@@ -15,5 +15,5 @@ export default defineConfig({
 			},
 		},
 	],
-	ignores: ["k8s/data/**", "infrastructure/*/templates/*.yaml"],
+	ignores: ["k8s/data/**", "infrastructure/*/templates/*.yaml", "k8s/charts/*/templates/*.yaml"],
 });
