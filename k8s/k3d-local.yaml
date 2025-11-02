@@ -4,8 +4,8 @@ kind: Simple
 metadata:
   name: local
 
-servers: 1
-agents: 3
+servers: 3
+agents: 6
 
 ports:
   - port: 80:80
