@@ -1,0 +1,19 @@
+nginx:
+  enabled: true
+  controller:
+    watchIngressWithoutClass: true
+    ingressClassResource:
+      default: true
+
+keda:
+  enabled: false
+
+victoria-metrics:
+  enabled: true
+
+  nameOverride: victoria-metrics
+  grafana:
+    ingress:
+      enabled: false
+  prometheus-operator-crds:
+    enabled: true

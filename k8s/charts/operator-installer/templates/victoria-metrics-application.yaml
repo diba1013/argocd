@@ -1,3 +1,5 @@
+{{- $values := index .Values "victoria-metrics" -}}
+{{- if $values.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -11,17 +13,10 @@ spec:
   source:
     repoURL: https://victoriametrics.github.io/helm-charts
     chart: victoria-metrics-k8s-stack
-    targetRevision: 0.59.3
+    targetRevision: 0.62.2
     helm:
       values: |
-        nameOverride: victoria-metrics
-        grafana:
-          ingress:
-            enabled: true
-            hosts:
-              - grafana.localhost
-        prometheus-operator-crds:
-          enabled: true
+        {{ toYaml $values | nindent 8 }}
   syncPolicy:
     automated:
       prune: true
@@ -45,3 +40,4 @@ spec:
       name: victoria-metrics-operator-admission
       jqPathExpressions:
         - '.webhooks[]?.clientConfig.caBundle'
+{{- end }}

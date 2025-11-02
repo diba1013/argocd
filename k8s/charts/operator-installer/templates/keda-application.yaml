@@ -1,3 +1,5 @@
+{{- $values := index .Values "keda" -}}
+{{- if $values.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -11,7 +13,10 @@ spec:
   source:
     repoURL: https://kedacore.github.io/charts
     chart: keda
-    targetRevision: 2.17.2
+    targetRevision: 2.18.1
+    helm:
+      values: |
+        {{ toYaml $values | nindent 8 }}
   syncPolicy:
     automated:
       prune: true
@@ -23,3 +28,4 @@ spec:
       - ApplyOutOfSyncOnly=true
       - RespectIgnoreDifferences=true
       - ServerSideApply=true
+{{- end }}

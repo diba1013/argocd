@@ -1,3 +1,5 @@
+{{- $values := index .Values "nginx" -}}
+{{- if $values.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -11,13 +13,10 @@ spec:
   source:
     repoURL: https://kubernetes.github.io/ingress-nginx
     chart: ingress-nginx
-    targetRevision: 4.12.2
+    targetRevision: 4.13.3
     helm:
       values: |
-        controller:
-          watchIngressWithoutClass: true
-          ingressClassResource:
-            default: true
+        {{ toYaml $values | nindent 8 }}
   syncPolicy:
     automated:
       prune: true
@@ -29,3 +28,4 @@ spec:
       - ApplyOutOfSyncOnly=true
       - RespectIgnoreDifferences=true
       - ServerSideApply=true
+{{- end }}
