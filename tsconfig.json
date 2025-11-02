@@ -4,5 +4,5 @@
 		"baseUrl": ".",
 		"lib": ["ESNext"]
 	},
-	"include": ["scripts/**/*.ts"]
+	"include": ["scripts/**/*.ts", "services/**/*.ts"]
 }

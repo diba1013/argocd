@@ -1,9 +1,10 @@
 .vscode
 
-/node_modules
-/dist
-/build
-/coverage
+**/node_modules
+**/dist
+**/coverage
+
+k8s/data/**
 
 *.tgz
 .eslintcache
