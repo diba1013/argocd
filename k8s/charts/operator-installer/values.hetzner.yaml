@@ -1,0 +1,25 @@
+nginx:
+  controller:
+    # Schedule ingress controller only on the master node.
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: node-role.kubernetes.io/control-plane
+                  operator: Exists
+    # Allow the execution of a unhealthy master node.
+    tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/control-plane
+      - effect: NoExecute
+        key: CriticalAddonsOnly
+        value: "true"
+      - effect: NoExecute
+        key: node.kubernetes.io/not-ready
+        operator: Exists
+        tolerationSeconds: 300
+      - effect: NoExecute
+        key: node.kubernetes.io/unreachable
+        operator: Exists
+        tolerationSeconds: 300

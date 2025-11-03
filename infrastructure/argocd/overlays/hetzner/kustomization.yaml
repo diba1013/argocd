@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: argocd
+
+resources:
+  # We do not want to configure HA for this cluster to keep node usage to a minimum.
+  - https://raw.githubusercontent.com/argoproj/argo-cd/v3.1.9/manifests/install.yaml
+  - ./argocd-server-ingress.yaml
+
+components:
+  - ../../components/config/
+  - ../../components/plugins/
+
+patches:
+  - path: patches/argocd-cm-params-cm.yaml
+  - path: patches/argocd-cm.yaml
+  - path: patches/argocd-styles-cm.yaml

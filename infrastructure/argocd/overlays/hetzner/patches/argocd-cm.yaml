@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+data:
+  # Hetzner changes should be applied fairly regular.
+  timeout.reconciliation: 5min
+  # Make sure that it is visible that we are on a local instance.
+  ui.bannercontent: This is a canary instance. Things might not be too stable.
