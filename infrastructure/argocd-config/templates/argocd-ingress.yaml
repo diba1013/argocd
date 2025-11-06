@@ -1,0 +1,31 @@
+{{- $ingress := .Values.ingress }}
+{{- if ge (len $ingress.hosts) 1 }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-server-ingress
+  namespace: argocd
+spec:
+  ingressClassName: nginx
+  rules:
+    {{- range $ingress.hosts }}
+    - host: {{ . }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-server
+                port:
+                  name: http
+    {{- end }}
+  {{- if $ingress.tls.enabled }}
+  tls:
+    {{- range $ingress.tls.hosts | default $ingress.hosts }}
+    - hosts:
+        - {{ . }}
+      secretName: argocd-server-crt
+    {{- end }}
+  {{- end }}
+{{- end }}

@@ -6,7 +6,6 @@ namespace: argocd
 resources:
   # We do not want to configure HA for this cluster to keep node usage to a minimum.
   - https://raw.githubusercontent.com/argoproj/argo-cd/v3.1.9/manifests/install.yaml
-  - ./argocd-server-ingress.yaml
 
 components:
   - ../../components/config/

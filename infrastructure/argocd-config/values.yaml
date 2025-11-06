@@ -1,2 +1,7 @@
 cluster:
   server: https://kubernetes.default.svc
+
+ingress:
+  hosts: []
+  tls:
+    enabled: false
