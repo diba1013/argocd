@@ -1,5 +1,12 @@
 nginx:
   controller:
+    # Use a node-port so that we do not need to provision a loadbalancer.
+    service:
+      type: NodePort
+      nodePorts:
+        http: 32080
+        https: 32433
+
     # Schedule ingress controller only on the master node.
     affinity:
       nodeAffinity:
