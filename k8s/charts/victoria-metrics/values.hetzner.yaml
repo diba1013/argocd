@@ -1,0 +1,5 @@
+victoria-metrics:
+  vmsingle:
+    spec:
+      storage:
+        storageClassName: local-path
