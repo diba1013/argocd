@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: infrastructure-applicationset
+  name: operator-installer-applicationset
 spec:
   goTemplate: true
   goTemplateOptions: [missingkey=error]
@@ -12,16 +12,16 @@ spec:
         files:
           - path: k8s/charts/*/values.yaml
         values:
-          name: {{ printf "{{ .metadata.name | default (index .path.segments 2) }}" }}
-          namespace: {{ printf "{{ .metadata.namespace | default (index.path.segments 2) }}" }}
+          name: '{{`{{ (get .metadata "name") | default (index .path.segments 2) }}`}}'
+          namespace: '{{`{{ (get .metadata "namespace" ) | default (index .path.segments 2) }}`}}'
   template:
     metadata:
-      name: {{ printf "{{ .name }}" }}
+      name: '{{`{{ .values.name }}`}}'
     spec:
       project: operator
       source:
         repoURL: {{ .Values.repository.url }}
-        chart: {{ printf "{{ .path.path }}" }}
+        path: '{{`{{ .path.path }}`}}'
         targetRevision: {{ .Values.repository.branch }}
         helm:
           ignoreMissingValueFiles: true
@@ -31,15 +31,15 @@ spec:
           valuesObject:
             environment: {{ .Values.environment }}
             metadata:
-              name: {{ printf "{{ .name }}" }}
-              namespace: {{ printf "{{ .namespace }}" }}
+              name: '{{`{{ .values.name }}`}}'
+              namespace: '{{`{{ .values.namespace }}`}}'
               cluster:
-                {{- toYaml .Values.metadata.cluster | nindent 14 }}
+                {{- toYaml .Values.cluster | nindent 16 }}
               repository:
-                {{- toYaml .Values.repository | nindent 14 }}
+                {{- toYaml .Values.repository | nindent 16 }}
       destination:
         server: {{ .Values.cluster.server }}
-        namespace: {{ printf "{{ .namespace }}" }}
+        namespace: '{{`{{ .values.namespace }}`}}'
       syncPolicy:
         automated:
           prune: true
@@ -51,5 +51,7 @@ spec:
           - ApplyOutOfSyncOnly=true
           - RespectIgnoreDifferences=true
           - ServerSideApply=true
-      ignoreDifferences:
-        {{ printf "{{ .metadata.ignoreDifferences | default [] | toYaml | nindent 8 }}" }}
+  {{/* Allow to toggle the automated sync temporarily. */}}
+  ignoreApplicationDifferences:
+    - jsonPointers:
+        - /spec/syncPolicy
