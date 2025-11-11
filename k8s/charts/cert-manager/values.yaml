@@ -1,5 +1,6 @@
 metadata:
   enabled: true
+  namespace: kube-system
   application:
     repository: https://charts.jetstack.io
     chart: cert-manager
