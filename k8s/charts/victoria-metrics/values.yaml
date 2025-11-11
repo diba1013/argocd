@@ -1,0 +1,32 @@
+metadata:
+  application:
+    ignoreDifferences:
+      - group: ""
+        kind: Secret
+        name: victoria-metrics-operator-validation
+        namespace: victoria-metrics
+        jsonPointers:
+          - /data
+      - group: admissionregistration.k8s.io
+        kind: ValidatingWebhookConfiguration
+        name: victoria-metrics-operator-admission
+        jqPathExpressions:
+          - ".webhooks[]?.clientConfig.caBundle"
+
+victoria-metrics:
+  nameOverride: victoria-metrics
+
+  grafana:
+    ingress:
+      enabled: false
+
+  prometheus-operator-crds:
+    enabled: true
+
+  prometheus-node-exporter:
+    tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/control-plane
+      - effect: NoExecute
+        key: CriticalAddonsOnly
+        value: "true"

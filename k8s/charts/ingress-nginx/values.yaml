@@ -1,0 +1,8 @@
+metadata: {}
+
+nginx:
+  enabled: true
+  controller:
+    watchIngressWithoutClass: true
+    ingressClassResource:
+      default: true

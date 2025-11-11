@@ -1,0 +1,55 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: infrastructure-applicationset
+spec:
+  goTemplate: true
+  goTemplateOptions: [missingkey=error]
+  generators:
+    - git:
+        repoURL: {{ .Values.repository.url }}
+        revision: {{ .Values.repository.branch }}
+        files:
+          - path: k8s/charts/*/values.yaml
+        values:
+          name: {{ printf "{{ .metadata.name | default (index .path.segments 2) }}" }}
+          namespace: {{ printf "{{ .metadata.namespace | default (index.path.segments 2) }}" }}
+  template:
+    metadata:
+      name: {{ printf "{{ .name }}" }}
+    spec:
+      project: operator
+      source:
+        repoURL: {{ .Values.repository.url }}
+        chart: {{ printf "{{ .path.path }}" }}
+        targetRevision: {{ .Values.repository.branch }}
+        helm:
+          ignoreMissingValueFiles: true
+          valueFiles:
+            - values.yaml
+            - {{ printf "values.%s.yaml" .Values.environment }}
+          valuesObject:
+            environment: {{ .Values.environment }}
+            metadata:
+              name: {{ printf "{{ .name }}" }}
+              namespace: {{ printf "{{ .namespace }}" }}
+              cluster:
+                {{- toYaml .Values.metadata.cluster | nindent 14 }}
+              repository:
+                {{- toYaml .Values.repository | nindent 14 }}
+      destination:
+        server: {{ .Values.cluster.server }}
+        namespace: {{ printf "{{ .namespace }}" }}
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - Prune=true
+          - PruneLast=true
+          - ApplyOutOfSyncOnly=true
+          - RespectIgnoreDifferences=true
+          - ServerSideApply=true
+      ignoreDifferences:
+        {{ printf "{{ .metadata.ignoreDifferences | default [] | toYaml | nindent 8 }}" }}
