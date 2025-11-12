@@ -2,6 +2,9 @@ cluster:
   server: https://kubernetes.default.svc
 
 ingress:
+  enabled: true
   hosts: []
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-cloudflare
   tls:
     enabled: false
