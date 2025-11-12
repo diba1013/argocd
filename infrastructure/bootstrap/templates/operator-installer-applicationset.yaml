@@ -51,7 +51,10 @@ spec:
           - ApplyOutOfSyncOnly=true
           - RespectIgnoreDifferences=true
           - ServerSideApply=true
-  {{/* Allow to toggle the automated sync temporarily. */}}
   ignoreApplicationDifferences:
+    {{/* Allow to toggle the automated sync temporarily. */}}
     - jsonPointers:
         - /spec/syncPolicy
+    {{/* Ignore differences in Helm parameters that have been defined manually. */}}
+    - jqPathExpressions:
+        - .spec.source.helm.parameters
