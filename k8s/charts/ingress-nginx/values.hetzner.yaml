@@ -1,32 +1,18 @@
 nginx:
   controller:
-    # Use a node-port so that we do not need to provision a loadbalancer.
+    # Use a host port for public access so that we do not need to provision a loadbalancer.
     service:
-      type: NodePort
-      nodePorts:
-        http: 32080
-        https: 32433
+      enabled: false
+    hostPort:
+      enabled: true
 
-    # Schedule ingress controller only on the master node.
+    # Schedule ingress controller only on the static node to allow a static IP but not expose the master node.
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
             - matchExpressions:
-                - key: node-role.kubernetes.io/control-plane
-                  operator: Exists
-    # Allow the execution of a unhealthy master node.
-    tolerations:
-      - effect: NoSchedule
-        key: node-role.kubernetes.io/control-plane
-      - effect: NoExecute
-        key: CriticalAddonsOnly
-        value: "true"
-      - effect: NoExecute
-        key: node.kubernetes.io/not-ready
-        operator: Exists
-        tolerationSeconds: 300
-      - effect: NoExecute
-        key: node.kubernetes.io/unreachable
-        operator: Exists
-        tolerationSeconds: 300
+                - key: static
+                  operator: In
+                  values:
+                    - "true"
