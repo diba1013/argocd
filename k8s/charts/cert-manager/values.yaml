@@ -5,3 +5,22 @@ metadata:
     repository: https://charts.jetstack.io
     chart: cert-manager
     version: 1.19.1
+
+cert-manager:
+  # Install CRDs as they are not enabled by default.
+  crds:
+    enabled: true
+
+  prometheus:
+    # Create a ServiceMonitor resource to be consumed by victoria metrics.
+    servicemonitor:
+      enabled: true
+
+issuer:
+  enabled: false
+  server: https://acme-v02.api.letsencrypt.org/directory
+  # The acme account that should be used for certificate creation.
+  email: ""
+  # The cloudflare token encoded with kubeseal.
+  # See: https://cert-manager.io/docs/configuration/acme/dns01/cloudflare/
+  token: ""
