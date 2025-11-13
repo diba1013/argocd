@@ -1,5 +1,7 @@
 environment: production
 
+domain: ""
+
 cluster:
   server: https://kubernetes.default.svc
 

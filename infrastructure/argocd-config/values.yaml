@@ -3,7 +3,8 @@ cluster:
 
 ingress:
   enabled: true
-  hosts: []
+  hosts:
+    - argocd.dev.{{ .Values.global.metadata.domain }}
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-cloudflare
   tls:

@@ -1,3 +1,4 @@
+{{- $root := $ }}
 {{- $ingress := .Values.ingress }}
 {{- if $ingress.enabled }}
 apiVersion: networking.k8s.io/v1
@@ -11,7 +12,7 @@ spec:
   ingressClassName: nginx
   rules:
     {{- range $ingress.hosts }}
-    - host: {{ . }}
+    - host: {{ tpl . $root | quote }}
       http:
         paths:
           - path: /
@@ -26,7 +27,7 @@ spec:
   tls:
     {{- range $ingress.tls.hosts | default $ingress.hosts }}
     - hosts:
-        - {{ . }}
+        - {{ tpl . $root | quote }}
       secretName: argocd-server-crt
     {{- end }}
   {{- end }}

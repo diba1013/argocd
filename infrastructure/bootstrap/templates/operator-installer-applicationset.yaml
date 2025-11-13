@@ -30,6 +30,9 @@ spec:
             - {{ printf "values.%s.yaml" .Values.environment }}
           valuesObject:
             environment: {{ .Values.environment }}
+            global:
+              metadata:
+                domain: {{ .Values.domain }}
             metadata:
               name: '{{`{{ .values.name }}`}}'
               namespace: '{{`{{ .values.namespace }}`}}'

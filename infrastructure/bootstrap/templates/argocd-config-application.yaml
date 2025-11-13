@@ -15,6 +15,15 @@ spec:
       valueFiles:
         - values.yaml
         - values.{{ .Values.environment }}.yaml
+      valuesObject:
+        environment: {{ .Values.environment }}
+        global:
+          metadata:
+            domain: {{ .Values.domain }}
+        cluster:
+          {{- toYaml .Values.cluster | nindent 10 }}
+        repository:
+          {{- toYaml .Values.repository | nindent 10 }}
   destination:
     server: {{ .Values.cluster.server }}
     namespace: argocd

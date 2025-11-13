@@ -3,3 +3,14 @@ victoria-metrics:
     spec:
       storage:
         storageClassName: local-path
+  grafana:
+    ingress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-cloudflare
+      hosts:
+        - grafana.dev.{{ .Values.global.metadata.domain }}
+      tls:
+        - hosts:
+            - grafana.dev.{{ .Values.global.metadata.domain }}
+          secretName: grafana-crt
