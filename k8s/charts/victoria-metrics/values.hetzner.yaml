@@ -9,8 +9,10 @@ victoria-metrics:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-cloudflare
       hosts:
-        - grafana.dev.{{ .Values.global.metadata.domain }}
+        # These need to be overwritten manually, since templating is not supported in every usage sadly.
+        - grafana.localhost
       tls:
         - hosts:
-            - grafana.dev.{{ .Values.global.metadata.domain }}
+            # These need to be overwritten manually, since templating is not supported in every usage sadly.
+            - grafana.localhost
           secretName: grafana-crt
