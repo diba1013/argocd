@@ -1,6 +1,7 @@
 victoria-metrics:
   vmsingle:
     spec:
+      retentionPeriod: 7d
       storage:
         storageClassName: local-path
   grafana:
