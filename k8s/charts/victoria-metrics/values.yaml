@@ -13,10 +13,19 @@ metadata:
         jqPathExpressions:
           - ".webhooks[]?.clientConfig.caBundle"
 
+common:
+  secrets:
+    GRAFANA_USER: ""
+    GRAFANA_PASSWORD: ""
+
 victoria-metrics:
   nameOverride: victoria-metrics
 
   grafana:
+    admin:
+      existingSecret: victoria-metrics-grafana
+      userKey: GRAFANA_USER
+      passwordKey: GRAFANA_PASSWORD
     ingress:
       enabled: false
 
