@@ -1,2 +1,7 @@
 metadata:
   namespace: kube-system
+
+common:
+  secrets:
+    CERT: ""
+    PRIVATE_KEY: ""
