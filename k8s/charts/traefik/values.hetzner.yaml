@@ -1,0 +1,25 @@
+traefik:
+  # Schedule controller only on the static node to allow a static IP but not expose the master node.
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: static
+                operator: In
+                values:
+                  - "true"
+  # Since we only use a single node and the deployment uses host-ports, we need to use recreate here.
+  # This will incur a small downtime during updates.
+  updateStrategy:
+    type: Recreate
+
+  # Use a host port for public access so that we do not need to provision a load balancer.
+  ports:
+    web:
+      hostPort: 80
+    websecure:
+      hostPort: 443
+  # We are already using host ports, therefore we do not need a load balancer.
+  service:
+    enabled: false

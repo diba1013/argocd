@@ -6,6 +6,8 @@ ingress:
   hosts:
     - argo.{{ .Values.global.metadata.domain }}
   annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
     cert-manager.io/cluster-issuer: letsencrypt-cloudflare
   tls:
     enabled: false

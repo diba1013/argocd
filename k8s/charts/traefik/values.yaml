@@ -1,0 +1,23 @@
+metadata: {}
+
+traefik:
+  providers:
+    # Disable traefik-owned CRDs, since we are not interested in managing them.
+    kubernetesCRD:
+      enabled: false
+    # Enable Kubernetes Gateway API support.
+    kubernetesGateway:
+      enabled: true
+    # Enable Kubernetes Ingress API support.
+    kubernetesIngress:
+      enabled: true
+    # Enable ingress-nginx compatibility.
+    kubernetesIngressNginx:
+      enabled: true
+
+  # Allow to expose HTTPRoutes from all namespaces.
+  gateway:
+    listeners:
+      web:
+        namespacePolicy:
+          from: All

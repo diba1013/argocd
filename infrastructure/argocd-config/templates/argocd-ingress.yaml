@@ -9,7 +9,7 @@ metadata:
   annotations:
     {{- $ingress.annotations | toYaml | nindent 4 }}
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   rules:
     {{- range $ingress.hosts }}
     - host: {{ tpl . $root | quote }}
