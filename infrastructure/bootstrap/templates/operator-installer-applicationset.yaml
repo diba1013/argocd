@@ -12,16 +12,17 @@ spec:
         files:
           - path: k8s/charts/*/values.yaml
         values:
-          name: '{{`{{ (get .metadata "name") | default (index .path.segments 2) }}`}}'
-          namespace: '{{`{{ (get .metadata "namespace" ) | default (index .path.segments 2) }}`}}'
+          name: '{{ `{{ (get .metadata "name") | default (index .path.segments 2) }}` }}'
+          namespace: '{{ `{{ (get .metadata "namespace" ) | default (index .path.segments 2) }}` }}'
+          crds: '{{ `{{ (dig "application" "crds" "enabled" "" .metadata) | toString }}` }}'
   template:
     metadata:
-      name: '{{`{{ .values.name }}`}}'
+      name: '{{ `{{ .values.name }}` }}'
     spec:
       project: operator
       source:
         repoURL: {{ .Values.repository.url }}
-        path: '{{`{{ .path.path }}`}}'
+        path: '{{ `{{ .path.path }}` }}'
         targetRevision: {{ .Values.repository.branch }}
         helm:
           ignoreMissingValueFiles: true
@@ -34,15 +35,15 @@ spec:
               metadata:
                 domain: {{ .Values.domain }}
             metadata:
-              name: '{{`{{ .values.name }}`}}'
-              namespace: '{{`{{ .values.namespace }}`}}'
+              name: '{{ `{{ .values.name }}` }}'
+              namespace: '{{ `{{ .values.namespace }}` }}'
               cluster:
                 {{- toYaml .Values.cluster | nindent 16 }}
               repository:
                 {{- toYaml .Values.repository | nindent 16 }}
       destination:
         server: {{ .Values.cluster.server }}
-        namespace: '{{`{{ .values.namespace }}`}}'
+        namespace: '{{ `{{ .values.namespace }}` }}'
       syncPolicy:
         automated:
           prune: true
@@ -54,6 +55,13 @@ spec:
           - ApplyOutOfSyncOnly=true
           - RespectIgnoreDifferences=true
           - ServerSideApply=true
+  {{/* Since the above template can only accept strings, we need to patch other value types here. */}}
+  {{/* See: https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Template/#template-patch. */}}
+  templatePatch: |
+    spec:
+      source:
+        helm:
+          skipCrds: {{ `{{ eq "false" .values.crds }}` }}
   ignoreApplicationDifferences:
     {{/* Allow to toggle the automated sync temporarily. */}}
     - jsonPointers:

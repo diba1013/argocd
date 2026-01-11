@@ -3,6 +3,8 @@ name: traefik
 version: 1.0.0
 
 dependencies:
-  - name: traefik
+  - name: traefik-crds
     repository: https://traefik.github.io/charts
-    version: 38.0.2
+    version: 1.13.1
+    alias: traefik
+    condition: traefik.enabled

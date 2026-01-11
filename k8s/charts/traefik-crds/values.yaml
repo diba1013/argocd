@@ -1,0 +1,12 @@
+metadata: {}
+
+traefik:
+  enabled: true
+
+  # Deploy traefik-owned CRDs since they are used for the main helm charts' configuration.
+  traefik: true
+  # Deploy Gateway API CRDs.
+  gatewayAPI: true
+
+  # Ensure CRDs are deleted on uninstall to prevent issues with ArgoCD on future installs.
+  deleteOnUninstall: true
