@@ -15,6 +15,7 @@ spec:
           name: '{{ `{{ (get .metadata "name") | default (index .path.segments 2) }}` }}'
           namespace: '{{ `{{ (get .metadata "namespace" ) | default (index .path.segments 2) }}` }}'
           crds: '{{ `{{ (dig "application" "crds" "enabled" "" .metadata) | toString }}` }}'
+          ignores: '{{ `{{ (dig "application" "ignoreDifferences" (list) .metadata) | toJson }}` }}'
   template:
     metadata:
       name: '{{ `{{ .values.name }}` }}'
@@ -56,12 +57,18 @@ spec:
           - RespectIgnoreDifferences=true
           - ServerSideApply=true
   {{/* Since the above template can only accept strings, we need to patch other value types here. */}}
+  {{/* We use toJson here to both prevent injection of malicious code and to ensure proper indentation. */}}
   {{/* See: https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Template/#template-patch. */}}
   templatePatch: |
     spec:
       source:
         helm:
           skipCrds: {{ `{{ eq "false" .values.crds }}` }}
+
+      ignoreDifferences:
+        {{- `{{ range $item := (fromJson .values.ignores) }}` }}
+        - {{ `{{ $item | toJson }}` }}
+        {{- `{{ end }}` }}
   ignoreApplicationDifferences:
     {{/* Allow to toggle the automated sync temporarily. */}}
     - jsonPointers:
