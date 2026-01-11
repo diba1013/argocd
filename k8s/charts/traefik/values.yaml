@@ -5,9 +5,9 @@ metadata:
 
 traefik:
   providers:
-    # Disable traefik-owned CRDs, since we are not interested in managing them.
+    # Enable traefik-owned CRDs since they are used for the main helm charts' configuration.
     kubernetesCRD:
-      enabled: false
+      enabled: true
     # Enable Kubernetes Gateway API support.
     kubernetesGateway:
       enabled: true
@@ -24,3 +24,14 @@ traefik:
       web:
         namespacePolicy:
           from: All
+
+  # Enable an route to the dashboard for local proxy access.
+  ingressRoute:
+    dashboard:
+      enabled: true
+
+  ports:
+    # Ensure that we never expose the dashboard with an ingress.
+    traefik:
+      expose:
+        default: false

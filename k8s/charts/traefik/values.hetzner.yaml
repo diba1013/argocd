@@ -20,6 +20,13 @@ traefik:
       hostPort: 80
     websecure:
       hostPort: 443
-  # We are already using host ports, therefore we do not need a load balancer.
+
+  # We need to enable this service to allow for traefik to update ingress status via external IP.
+  # This is really only required for ArgoCD to stop complaining about pending ingresses.
   service:
-    enabled: false
+    enabled: true
+    # We are already using host ports, therefore we do not need a load balancer.
+    type: ClusterIP
+    # TODO: This needs to be updated with the respective static IP address of your node.
+    externalIPs:
+      - 10.0.0.1
