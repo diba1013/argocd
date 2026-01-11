@@ -7,8 +7,6 @@ victoria-metrics:
   grafana:
     ingress:
       enabled: true
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-cloudflare
       hosts:
         # These need to be overwritten manually, since templating is not supported in every usage sadly.
         - grafana.localhost
