@@ -1,17 +1,5 @@
 metadata:
-  application:
-    ignoreDifferences:
-      - group: ""
-        kind: Secret
-        name: victoria-metrics-operator-validation
-        namespace: victoria-metrics
-        jsonPointers:
-          - /data
-      - group: admissionregistration.k8s.io
-        kind: ValidatingWebhookConfiguration
-        name: victoria-metrics-operator-admission
-        jqPathExpressions:
-          - ".webhooks[]?.clientConfig.caBundle"
+  namespace: victoria-metrics
 
 common:
   secrets:
@@ -19,7 +7,10 @@ common:
     GRAFANA_PASSWORD: ""
 
 victoria-metrics:
-  nameOverride: victoria-metrics
+  fullnameOverride: victoria-metrics
+
+  victoria-metrics-operator:
+    enabled: false
 
   grafana:
     admin:
@@ -32,9 +23,6 @@ victoria-metrics:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.tls: "true"
         cert-manager.io/cluster-issuer: letsencrypt-cloudflare
-
-  prometheus-operator-crds:
-    enabled: true
 
   prometheus-node-exporter:
     tolerations:

@@ -1,0 +1,21 @@
+metadata:
+  namespace: victoria-metrics
+
+victoria-metrics:
+  crds:
+    plain: true
+    cleanup:
+      enabled: true
+    upgrade:
+      enabled: true
+      forceConflicts: true
+
+  admissionWebhooks:
+    enabled: true
+    certManager:
+      enabled: true
+
+  operator:
+    # Properly display resources within ArgoCD.
+    prometheus_converter_add_argocd_ignore_annotations: true
+    operator.enable_converter_ownership: true
