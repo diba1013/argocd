@@ -1,0 +1,29 @@
+{{- $values := index .Values "rclone-csi-driver" -}}
+{{- if $values.enabled }}
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: rclone
+provisioner: rclone.csi.veloxpack.io
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Delete
+allowVolumeExpansion: true
+parameters:
+  remotePath: "buckets/${pvc.metadata.namespace}/${pvc.metadata.name}"
+  csi.storage.k8s.io/node-publish-secret-name: "${pvc.annotations['rclone.csi.veloxpack.io/secret-name']}"
+  csi.storage.k8s.io/node-publish-secret-namespace: "${pvc.namespace}"
+mountOptions:
+  # VFS cache options
+  - vfs-cache-mode=full
+  - vfs-cache-max-size=20G
+  - vfs-cache-max-age=36h
+  - vfs-cache-poll-interval=1m
+  # Network & Performance options
+  - vfs-read-ahead=256M
+  - buffer-size=64M
+  - async-read=true
+  - dir-cache-time=720h
+  # Stability (Dropbox Rate lImits)
+  - tpsLimit=12
+  - tpsLimit-burst=0
+{{- end }}
