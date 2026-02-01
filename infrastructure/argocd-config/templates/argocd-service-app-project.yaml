@@ -5,7 +5,10 @@ metadata:
 spec:
   description: Configure service applications.
   sourceRepos:
-    - "https://github.com/*"
+    - "https://github.com/**/*.git"
   destinations:
     - server: {{ .Values.cluster.server }}
       namespace: "*"
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: Namespace
