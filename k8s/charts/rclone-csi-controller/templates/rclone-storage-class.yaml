@@ -6,7 +6,7 @@ metadata:
   name: rclone
 provisioner: rclone.csi.veloxpack.io
 volumeBindingMode: WaitForFirstConsumer
-reclaimPolicy: Delete
+reclaimPolicy: Retain
 allowVolumeExpansion: true
 parameters:
   remotePath: "buckets/${pvc.metadata.namespace}/${pvc.metadata.name}"
