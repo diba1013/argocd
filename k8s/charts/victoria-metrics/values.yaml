@@ -1,10 +1,13 @@
 metadata:
   namespace: victoria-metrics
 
-common:
-  secrets:
-    GRAFANA_USER: ""
-    GRAFANA_PASSWORD: ""
+secrets:
+  # Default Grafana admin credentials.
+  GRAFANA_USER: ""
+  GRAFANA_PASSWORD: ""
+  # Storage backend configuration.
+  REMOTE_NAME: ""
+  REMOTE_CONFIGURATION_DATA: ""
 
 victoria-metrics:
   fullnameOverride: victoria-metrics
