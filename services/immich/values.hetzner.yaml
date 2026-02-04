@@ -1,0 +1,75 @@
+metadata: {}
+
+enabled: true
+
+secrets:
+  REMOTE_NAME: "AgCpSAjva8TURBs6vwUztAIVjZMkn9hkEdsOau8DHND4Pk6hSw94S/r6A+jtZ0CLZTEfsiCZAcwhZ5BfEEHD2zei5gY7bzdrFYCmwGuwdNifpodgizknud4U1KfzVpIchbo2tlxmLeCXBqcUa64guptF4AZSlzI8u71dfNQGZzB/UF8yvpfyMub5cm4lgm/a18DZaS63zaIGxLqtW9tIFb1fqtDHKLZ6XDPepfGqs/K2n/K9D0b8AS4oggwRUSMX0PDofhiB9TNjyHGzMmi/8wsOg1XTNGT1NLG8HSyIG2BfuZQzZYwYs1zJfxesYjuplpNkyL46CT7XEv4NojneeVqsEFb0oZEvSunAbgSfi3wtUVq9aXU6jcoITA6tDanuRMnOl5SZSImRuVaMh9J6aTQZw5nRa0KkKupQwg4XEjbXJwPUsyiFUrzPx3b/BtJ16lbK4TqHAYTHU4QKwjUUbILLwBAvM5Orr3Xd13RSvknQZ2LjEbC0m6C7nLBFBskgqj9ts5cEsHysjh1G871YvCalHzrnUP+Npyr41iSpLK45Oo1VZ/retwC7cNDsDf0alMzd5MZfRhYXwo9sz/pop0RXBabZM72uzCPuNyDsTyZ/lxrOVtQsmO9bzwWLctl3P7WtZVF9+jM5MrYQACh/4+wwMMtlYWwHIOnb15TpOMq+0YQ9Wa0JXdk3ht665CxE6VHp6YtNsnnPUwquC2o6Z7uEyg6+fN0="
+  REMOTE_CONFIGURATION_DATA: "AgBYq4/Of2SqOw2qSy9kdn38/Loe73RPZSseQeFieUtVewuMKvT/5SexT3nV1QPPcnDCenL3nTmxVfEUV75wivLmbTiTDv7vEvIxbcnwsoq5sgo395RnQU4bV6h/ixFcjDton9EjYHXIyTtRe23KcDmxEfgodHlA9DnAfCbH7BuDA1Z/zZZb1YznFjkLjCxVsT3gY2o2a4I8j0YSesCwlO99D612l4eE9X/KlIvQHqfCy/OmnOsZYXRakbRJ35I7jNl+xFpLJSW9a6KnKFJXbdpierhJYH7KaXhsmqen8zxBBgK9VyQZnEGAgLbJzAS2iI1lXVVjFz5Ni9WLZOjBuqpMosQXtjQ7TH/CsX4I75pzhnkaE6llrPMsO6YT8y6JoTcwYwVq9PiW6KK40kLCEhxLOTblYhv6N1aJ7/FJIME1sKccDgpmZIuSi0leFl4AKOtu47lIAFc3C0I0/P6ln6U2G/cE5WJaV3FfwJDDwBl/zMWfyQ9BS1EKWNIKAFNtYZ7LwFijv0905egIq1MB6tQAs0NseM53Z0kJcGT5LKvUx3pwm80BVyOxyCHLRU2mpNhJNWJgi3n0wZtgxINf34hm4DASJBRSC+wXPbzAqJpvUmjOb6+CUIB2ZjILEmLsJdS9nizs4GV0IPilXdPswRzXtSt4ESiPn3ZieSTMYF0IOBj2kMgZGiNeD86ww4tALX4MlyvPewvSQtkzf1TSYW3vFDYwxwBQM2w91PI02vln2Otj2QImiyxpOrvqXBiIKSThfu7LTyXkWmA36hbvjIKeNwX7jZOOn6Acp2KzaurrJCFhGHHIoePs9lx5b3ShBJW16BsSgvUQ6jn0dOvFPNPrO9gpytkkrMXA/qJssS5vcaCeOqbU6jij1CRvW0Yy3abc14yIyO9Xd8lH3IdN9w9dsQwwS3y0nz3LnIOAv/oex+Ow4RzCjEhk7KqX3YUA2kJ6PgoXixmWngsqHOYkt4poriixKE18s8EurbJM5sbM"
+  POSTGRES_USER: "AgAf+90k8JXKHdSJuM3unOxMadZDgKphUNVqjbSTEZieN7L6fhe+tukeuLEhoBfHwWEYRWtjFAJAO0Skc4TFFA6bqW6sNe9nbw+neGXrIw84l790yuMpJFf+ToilTjt5y4J9XFUA2TTpOD5VGXLU9AIPK81a+d4G26UiuOnYDY6RKbmrVJMKDYiPgDs+N+rtauShPe93QVGrTaDoDPaW+HvoOvK6hMT2XzX99FZ2FmR7b8qdIXeOQBg2HUkwJNX9TB9qI1CKBeUiA6ikUGVuUHx/zVy6pPokDcvikZx85j8W+dccp8xWhYaQ0X2DTbjs0BzE0mnkYJY8l9qqqQxNTp2DvukQ1O2AdZRDLHFw0tlihZoPdOq6G6nt3lhLeHkBQO/DiqACb7I2BkCoeZHzatpruCIVdxhbGtinzWJS6QdZdIXNVTHzn8wnwc8WSPkJwOn+LcJXUqMZxpPKTv2C3eCp8mimttVO2caHMbUfbXKOKnyBoq/E7efZp3NEjoEcykzm9+8PsoRhkZS4vm9CwleIxIVCrIw5FAVtS4IBiG9aZTt0Q7iWR/YUpVWYHuF8s0IwhcYLvVfpu1xwQmFNIZju22pze/wIaAxwQ1YtSO03qXyQoFgbHjw+Ap3Iws4Tr12YkowWHbtFx1gmSzwo/+kNtQtF2PCgC0cTzH8OnxKR+Ao3a+9gKhaA+5llbuUNMWfT+7F1eHaYKg=="
+  POSTGRES_PASSWORD: "AgB+Ib5dX9D1jybJcKS886IpED1apg2gCBXiXN8guCXJDB5WZauC7jxbvgwN1eeZVxjpB5ecvjNOVsDDKjGp0cj5lk2rPzL2S8nuMmYg9S7I2+gRWKHEwmfNRp1qsuXeCfz/iT8tLmNLkGey0bV0AZPW8GGXSjYGxPDXA6wjo+muSxY/5bmawrWk9PqmI4n6zpaBAw/1AMklOEVDITLggEQ3CrVOyjO/vT/qRGk7qOXRlbqtiZNgtHulbU/+c7KM+yeKo8KkZmbQtzyRTxtR+TyxW6/YAUjzArDg2zGMQdpR2GJ9+A9POa90vRIDA9UG1CU2+M/lHc7i43tn8oLCPHfrEZtgQfwrdwogXYgezbbC5A5pIk2pBfdLAm1j71Sd6lmOlDmBD4kQGhb+D12BCVfLAEU4LPYaDG7EdLV2bSBh7p/tptYnZ1EDK+XJ8S2OLkVIVGK2vutPtyrAeAeZU99pr40bj28cVQNHslz7RkN5pwc6PdqLyS/e9jT63u9i7x34DSoU0jFjN6mfvQCtBpTBxgkmjnmwhjIcYrLfaxCwbx3LprUlJqJj+HPcKjwCOG4Dscb0LEfzBu+k69cwVd7/vtuz2XHvpKaCh9naIb3QUbNQK8TlLjhX7DiPwiJikgG4Eqr6cUV3xRNavCHmuVC37tMRAn5jKULQCXt1qvPVsyTYKBFT7yhkkDLLjZaj4YEmjal0WySLNw=="
+  POSTGRES_DATABASE_NAME: "AgCE/OOHfegm9MZS179uJQVIkuKGtgYfKIbQWbMt4WTazyIU6DbJRMsd92WmSQcv+SbN14+DcFUrYJo1u50pKvT3REvnlk15H+Ta+fKPL2fnKt51aAuF3AYOLjB3THZy84bdkvm0+DCCQoXPJTi3FHMF6+8e+gu1L7iZjRF+cFcLlIrsIpbRNAMtM5uIR296SwrOcwKT3q9EVYbqwopmsrizp9c+9pfufTQS1T0D6iQJ6F9ox9n1otoqdlVItWBNNNrkOVaiAT3kiaNqTyEQIXVaYWyayHxCEp96xVmOMCqUYhgwCB/+ropC2aIrrMtujVGhoLtYCWOp12iOC1jYyiYlMsclJ8YJ3rECWrbQ4cpV2TXRLXL6sqfpfc4xCkikneL9BSLeDZ82oF0dLz4I4YhtBQjVSm105OwdN9tkJyHEM5bMdjNcMUmwMaaryjHI03RkRq6IzNjlPTawU73mSMJ0HIG0gck8ElK/Ypv3a33UHgyGFOwa6589hZIdPL9kg9woeinGMtU6Ssb1dDmc1ccJO28P27o9lcg4HmITyI75V77Xo5RHokUKIh4CeW+vbv4BpqVYowSKNLJ8DMKZUoW5sNrIHYa3yIVZ5vir3vlD9+g8mjguzs4i3289baiF4pzryJY5zlbhys0/Kz8+OqXtyLTTgvPH2LKWSNYsSBOiTnMt4vmR2LoeXQ+dnANOhWK3yKGupvg="
+
+immich:
+  controllers:
+    main:
+      containers:
+        main:
+          image:
+            tag: v2.5.3
+
+  immich:
+    metrics:
+      enabled: true
+    persistence:
+      library:
+        existingClaim: immich-storage
+    configuration:
+      image:
+        preview:
+          format: webp
+          size: 1080
+        fullsize:
+          enabled: true
+          format: webp
+      machineLearning:
+        facialRecognition:
+          enabled: false
+      storageTemplate:
+        enabled: true
+        hashVerificationEnabled: true
+        template: "{{y}}/{{MM}}/{{assetIdShort}}"
+      trash:
+        enabled: true
+        days: 90
+
+  valkey:
+    enabled: true
+    persistence:
+      data:
+        storageClass: local-path
+
+  server:
+    enabled: true
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-cloudflare
+        hosts:
+          - host: '{{ printf "immich.%s" .Values.global.metadata.domain }}'
+            paths:
+              - path: /
+                service:
+                  identifier: main
+        tls:
+          - hosts:
+              - '{{ printf "immich.%s" .Values.global.metadata.domain }}'
+            secretName: immich-tls
+
+  machine-learning:
+    enabled: true
+    persistence:
+      data:
+        storageClass: local-path
+        accessMode: ReadWriteOnce
+        size: 1Gi

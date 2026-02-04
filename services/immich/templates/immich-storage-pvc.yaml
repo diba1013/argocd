@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-storage
+  annotations:
+    rclone.csi.veloxpack.io/secret-name: immich-storage
+spec:
+  storageClassName: rclone
+  resources:
+    requests:
+      storage: 500Gi
+  accessModes:
+    - ReadWriteOnce

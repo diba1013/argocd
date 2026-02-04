@@ -1,0 +1,10 @@
+metadata: {}
+
+global:
+  metadata:
+    domain: local
+
+immich:
+  enabled: false
+
+database: {}
