@@ -11,7 +11,7 @@ victoria-metrics:
     spec:
       retentionPeriod: 7d
       storage:
-        storageClassName: rclone
+        storageClassName: rclone-volatile
       storageMetadata:
         annotations:
           rclone.csi.veloxpack.io/secret-name: victoria-metrics-storage
