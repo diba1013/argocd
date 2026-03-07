@@ -5,6 +5,6 @@ version: 1.0.0
 dependencies:
   - repository: oci://ghcr.io/veloxpack/charts
     name: csi-driver-rclone
-    version: 0.4.7
+    version: 0.4.9
     alias: rclone-csi-driver
     condition: rclone-csi-driver.enabled
