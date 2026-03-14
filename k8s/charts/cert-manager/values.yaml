@@ -1,3 +1,7 @@
+global:
+  metadata:
+    domain: ""
+
 metadata:
   enabled: true
   namespace: kube-system
@@ -15,6 +19,9 @@ cert-manager:
     # Create a ServiceMonitor resource to be consumed by victoria metrics.
     servicemonitor:
       enabled: true
+
+certificate:
+  enabled: true
 
 issuer:
   enabled: false

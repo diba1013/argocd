@@ -1,0 +1,20 @@
+{{- $domain := .Values.global.metadata.domain -}}
+{{- $certificate := .Values.certificate -}}
+{{- if and $certificate.enabled $domain -}}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-certificate
+spec:
+  dnsNames:
+    - {{ printf "%s" $domain | quote }}
+    - {{ printf "*.%s" $domain | quote }}
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: letsencrypt-cloudflare
+  secretName: wildcard-tls
+  usages:
+    - digital signature
+    - key encipherment
+{{- end }}
