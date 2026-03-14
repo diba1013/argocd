@@ -13,17 +13,23 @@ parameters:
   csi.storage.k8s.io/node-publish-secret-name: "${pvc.annotations['rclone.csi.veloxpack.io/secret-name']}"
   csi.storage.k8s.io/node-publish-secret-namespace: "${pvc.namespace}"
 mountOptions:
-  # VFS cache options
-  - vfs-cache-mode=full
-  - vfs-cache-max-size=20G
-  - vfs-cache-max-age=36h
-  - vfs-cache-poll-interval=1m
+  # Cache Configuration for Victoria Metrics (write-heavy workload)
+  - vfs-cache-mode=writes
+  - vfs-cache-max-size=5G
+  - vfs-cache-max-age=48h
+  - vfs-cache-poll-interval=30s
+
   # Network & Performance options
-  - vfs-read-ahead=256M
+  - vfs-read-ahead=512M
   - buffer-size=64M
   - async-read=true
   - dir-cache-time=720h
-  # Stability (Dropbox Rate lImits)
-  - tpsLimit=12
-  - tpsLimit-burst=0
+
+  # Write optimization for time-series data
+  - vfs-write-buffer-size=16M
+  - vfs-write-threshold=8M
+
+  # Stability options (adjust based on remote provider rate limits)
+  - tpsLimit=50
+  - tpsLimit-burst=100
 {{- end }}
