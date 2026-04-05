@@ -1,0 +1,33 @@
+{{- $ingress := .Values.ingress }}
+{{- if $ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: registry
+  labels:
+    kubernetes.io/controller: registry
+  annotations:
+    {{- toYaml $ingress.annotations | nindent 4 }}
+spec:
+  rules:
+    {{- range $_, $host := $ingress.hosts }}
+    - host: {{ tpl $host $ }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: registry
+                port:
+                  number: 5000
+    {{- end }}
+  {{- if $ingress.tls.enabled }}
+  tls:
+    - hosts:
+      {{- range $_, $host := $ingress.tls.hosts | default $ingress.hosts }}
+        - {{ tpl $host $ }}
+      {{- end }}
+      secretName: {{ $ingress.tls.secretName | default "wildcard-tls" }}
+  {{- end }}
+{{- end }}

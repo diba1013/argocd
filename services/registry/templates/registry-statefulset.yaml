@@ -1,0 +1,106 @@
+{{- $registry := .Values.registry }}
+{{- if $registry.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: registry
+  labels:
+    kubernetes.io/controller: registry
+spec:
+  serviceName: registry-headless
+  replicas: {{ $registry.replicas }}
+  selector:
+    matchLabels:
+      kubernetes.io/controller: registry
+  template:
+    metadata:
+      labels:
+        kubernetes.io/controller: registry
+      annotations:
+        checksum/config: {{ tpl (.Values.configuration | toYaml) $ | sha256sum }}
+    spec:
+      containers:
+        - name: registry
+          image: {{ printf "%s:%s" $registry.image.repository $registry.image.tag }}
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+          {{- with .Values.registry.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          env:
+            - name: REGISTRY_HEALTH_CREDENTIALS
+              valueFrom:
+                secretKeyRef:
+                  name: registry-secrets
+                  key: probe
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /startupz
+              port: http
+              httpHeaders: &probeAuthenticationHeaders
+                - name: Authorization
+                  value: Basic $REGISTRY_HEALTH_CREDENTIALS
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /livez
+              port: http
+              httpHeaders: *probeAuthenticationHeaders
+            initialDelaySeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+              httpHeaders: *probeAuthenticationHeaders
+            initialDelaySeconds: 5
+          resources:
+            {{- toYaml $registry.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/registry
+            - name: config
+              mountPath: {{ .Values.configuration.path }}
+              readOnly: true
+            - name: secrets
+              mountPath: /secrets
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: registry-config
+        - name: secrets
+          secret:
+            secretName: registry-secrets
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: data
+        labels:
+          kubernetes.io/controller: registry
+        annotations:
+          {{- toYaml .Values.persistence.annotations | nindent 10 }}
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size }}
+        {{- with .Values.persistence.storageClass }}
+        storageClassName: {{ . }}
+        {{- end }}
+{{- end }}

@@ -1,0 +1,72 @@
+# Configuration for ArgoCD.
+metadata: {}
+
+# Injected via ArgoCD.
+global:
+  metadata:
+    domain: local
+
+secrets:
+  REMOTE_NAME: ""
+  REMOTE_CONFIGURATION_DATA: ""
+  # Encrypted .dockerconfigjson containing this registries credentials.
+  CONTAINER_REGISTRY_CREDENTIALS: ""
+
+registry:
+  enabled: true
+
+  image:
+    repository: ghcr.io/project-zot/zot
+    tag: v2.1.15
+
+  replicas: 1
+  args:
+    - serve
+    - /etc/zot/config.yaml
+
+configuration:
+  path: /etc/zot
+  files:
+    - name: config.yaml
+      data: |
+        distSpecVersion: 1.0.1
+        storage:
+          rootDirectory: /var/lib/registry
+          gc: true
+          gcDelay: 1h
+          gcInterval: 24h
+        http:
+          address: 0.0.0.0
+          port: 5000
+          auth:
+            failDelay: 5
+            htpasswd:
+              path: /secrets/htpasswd
+          rateLimit:
+            rate: 10
+            methods:
+              - method: GET
+                rate: 5
+  secrets:
+    - name: probe
+      # Encrypt entry as basic auth.
+      #  echo -n <username>:<password> | base64
+      data: ""
+    - name: htpasswd
+      # Encrypt entries with the following command, then encrypt the whole file with sealed secrets.
+      #  docker run --rm httpd:alpine htpasswd -bBn <username> <password>
+      data: ""
+
+persistence:
+  size: 10Gi
+  storageClass: rclone
+  annotations:
+    rclone.csi.veloxpack.io/secret-name: registry-storage
+
+ingress:
+  enabled: true
+  annotations: {}
+  hosts:
+    - "registry.{{ .Values.global.metadata.domain }}"
+  tls:
+    enabled: true
