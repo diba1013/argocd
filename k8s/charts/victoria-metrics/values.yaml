@@ -34,3 +34,20 @@ victoria-metrics:
       - effect: NoExecute
         key: CriticalAddonsOnly
         value: "true"
+    vmScrape:
+      spec:
+        endpoints:
+          - port: metrics
+            # Override the hostname to use the bubernetes name instead to account for custom nodes.
+            relabelConfigs:
+              - sourceLabels: [__meta_kubernetes_pod_node_name]
+                targetLabel: nodename
+                action: replace
+            metricRelabelConfigs:
+              # Remove the original nodename label from the metrics that is collected from the exporter.
+              - action: labeldrop
+                regex: exported_nodename
+              # Default values
+              - action: drop
+                source_labels: [mountpoint]
+                regex: "/var/lib/kubelet/pods.+"
