@@ -1,6 +1,6 @@
 dependencies:
 - name: csi-driver-rclone
   repository: oci://ghcr.io/veloxpack/charts
-  version: 0.4.9
-digest: sha256:e19376546c61cf2cfe8713b7718cd98717076dc351d19d3ce17cdeaed5e94915
-generated: "2026-03-07T14:18:32.407188636+01:00"
+  version: 0.4.11
+digest: sha256:dc3b69ec0b24400b1cb369ae7df773ca671b987735d0bc5dc6863905d9d05d5e
+generated: "2026-05-02T10:32:07.647251591+02:00"
