@@ -25,4 +25,4 @@ victoria-metrics:
         - hosts:
             # These need to be overwritten manually, since templating is not supported in every usage sadly.
             - grafana.localhost
-          secretName: grafana-crt
+          secretName: wildcard-tls

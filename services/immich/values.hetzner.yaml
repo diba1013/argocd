@@ -53,8 +53,7 @@ immich:
     ingress:
       main:
         enabled: true
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-cloudflare
+        annotations: {}
         hosts:
           - host: '{{ printf "immich.%s" .Values.global.metadata.domain }}'
             paths:
@@ -64,7 +63,7 @@ immich:
         tls:
           - hosts:
               - '{{ printf "immich.%s" .Values.global.metadata.domain }}'
-            secretName: immich-tls
+            secretName: wildcard-tls
 
   machine-learning:
     enabled: true

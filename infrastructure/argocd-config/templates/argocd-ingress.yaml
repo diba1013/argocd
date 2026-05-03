@@ -28,7 +28,7 @@ spec:
     {{- range $ingress.tls.hosts | default $ingress.hosts }}
     - hosts:
         - {{ tpl . $root | quote }}
-      secretName: argocd-server-crt
+      secretName: wildcard-tls
     {{- end }}
   {{- end }}
 {{- end }}
