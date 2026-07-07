@@ -1,6 +1,6 @@
 dependencies:
 - name: cert-manager
   repository: https://charts.jetstack.io
-  version: v1.20.2
-digest: sha256:ea53573a862db47010d7da9c63aa24f6c16ce88ad18861355709883a2fa60cdd
-generated: "2026-05-02T10:31:58.613264855+02:00"
+  version: v1.20.3
+digest: sha256:bae6dd079566575b0b7ce0ef21f7d4cb30152ac82214f35fd811b32729301f6e
+generated: "2026-07-07T18:19:27.708919894+02:00"
