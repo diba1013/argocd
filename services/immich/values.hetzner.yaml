@@ -15,7 +15,7 @@ immich:
       containers:
         main:
           image:
-            tag: v2.7.5
+            tag: v3.0.1
 
   immich:
     metrics:
@@ -46,7 +46,11 @@ immich:
     enabled: true
     persistence:
       data:
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
         storageClass: local-path
+        size: 1Gi
 
   server:
     enabled: true
@@ -68,7 +72,9 @@ immich:
   machine-learning:
     enabled: true
     persistence:
-      data:
-        storageClass: local-path
+      cache:
+        enabled: true
+        type: persistentVolumeClaim
         accessMode: ReadWriteOnce
+        storageClass: local-path
         size: 1Gi
