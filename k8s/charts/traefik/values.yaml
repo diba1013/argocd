@@ -1,31 +1,22 @@
-metadata:
-  application:
-    crds:
-      enabled: false
+# values.yaml
+metadata: {}
+
+secrets:
+  EXTERNAL_IP: ""
 
 traefik:
   providers:
     # Enable traefik-owned CRDs since they are used for the main helm charts' configuration.
     kubernetesCRD:
       enabled: true
-    # Enable Kubernetes Gateway API support.
-    kubernetesGateway:
-      enabled: true
     # Enable Kubernetes Ingress API support.
     kubernetesIngress:
       enabled: true
-    # Enable ingress-nginx compatibility.
-    kubernetesIngressNginx:
+    # Enable ingress-nginx compatibility
+    kubernetesIngressNGINX:
       enabled: true
 
-  # Allow to expose HTTPRoutes from all namespaces.
-  gateway:
-    listeners:
-      web:
-        namespacePolicy:
-          from: All
-
-  # Enable an route to the dashboard for local proxy access.
+  # Enable a route to the dashboard for local proxy access.
   ingressRoute:
     dashboard:
       enabled: true

@@ -1,3 +1,6 @@
+secrets:
+  EXTERNAL_IP: AgBRTnnmSL3ZXdaGHBTqpLQy0TwaTbatjNic6j+cE/+ul3lHbMlz/VSgkY6N8vM1xNjIucCRUS7uXy5SQtQlCDk75mbnTWx6C+9VHLttkdPNd+rIs2b4WAyuP3chV7jZIevn5XiB743Znnwt9uiwm4og7ge9PjhTqm/kxHo/fhprqyH0Gtx5gYrtoKmZITF6FigYyTzZGKn5XOP+rc8AA6tNrXCeeHVJjS6kLzSbZsPHuAHjUs3+SvMkgfHzNXymtTfwWw6MMnEjrUGMm/Ug9ai9fu0uydcbuqK7IaZ0+hZ71nka9AnuulXNKRIAoRJHfh9+jVJr6FzgR57LKWBK4vWkBBDTCPI1I0f/gcSyCzM2mCX7nhf4ZNTlPYvMTk5/44bsklvzn3eczEOHFNB0PgJGrG48ULEeBAfCf6c4bBBFXRp5mY3CUsgzRFnCubKzWzd9cTph2GLpvDF87CvMuNVtPBifbhyOlvnWFBwTiWY+kmRKN4uzD8k8CLnWCSj1E6vL4SyvAxKS+Y5WGJUNbRpcNAqZHEbiDl00DE04eikMbtP9nnA8TPRPc15XjocSLi2gedUmpHiPif9MHK7gJWjNoYJG9gms1CIQLcFQXLdV5AeKCG4AIZ888YYcykH4CpFI02LAKg9EcFi63oF/exgRxyNzHLpREXEz4ehx/xkbXgYRNkGr5/7qprSlP14qc0rHr+Y41+x8e1fNsv/adA==
+
 traefik:
   # Schedule controller only on the static node to allow a static IP but not expose the master node.
   affinity:
@@ -14,6 +17,13 @@ traefik:
   updateStrategy:
     type: Recreate
 
+  env:
+    - name: NODE_EXTERNAL_IP
+      valueFrom:
+        secretKeyRef:
+          name: traefik-secrets
+          key: EXTERNAL_IP
+
   # Use a host port for public access so that we do not need to provision a load balancer.
   ports:
     web:
@@ -21,12 +31,12 @@ traefik:
     websecure:
       hostPort: 443
 
-  # We need to enable this service to allow for traefik to update ingress status via external IP.
-  # This is really only required for ArgoCD to stop complaining about pending ingresses.
+  # This avoids any kube-proxy or port-clash issues.
   service:
-    enabled: true
-    # We are already using host ports, therefore we do not need a load balancer.
-    type: ClusterIP
-    # TODO: This needs to be updated with the respective static IP address of your node.
-    externalIPs:
-      - 10.0.0.1
+    enabled: false
+
+  # We need to enable this argument for traefik to update ingress status via external IP.
+  # This is really only required for ArgoCD to stop complaining about pending ingresses.
+  additionalArguments:
+    # Have kubernetes resolve the secret value since traefik does not ship with a shell wrapper capable of expanding the variable.
+    - --providers.kubernetesingress.ingressEndpoint.ip=$(NODE_EXTERNAL_IP)
