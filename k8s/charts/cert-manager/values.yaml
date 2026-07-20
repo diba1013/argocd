@@ -27,7 +27,7 @@ issuer:
   enabled: false
   server: https://acme-v02.api.letsencrypt.org/directory
   # The acme account that should be used for certificate creation.
-  email: ""
+  email: "{{ .Values.global.metadata.certificate.issuer.email }}"
   # The cloudflare token encoded with kubeseal.
   # See: https://cert-manager.io/docs/configuration/acme/dns01/cloudflare/
   token: ""

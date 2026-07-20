@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: operator-installer-applicationset
+  name: operator-installer
 spec:
   goTemplate: true
   goTemplateOptions: [missingkey=error]
@@ -35,6 +35,9 @@ spec:
             global:
               metadata:
                 domain: {{ .Values.domain }}
+                certificate:
+                  issuer:
+                    email: {{ .Values.certificate.issuer.email }}
             metadata:
               name: '{{ `{{ .values.name }}` }}'
               namespace: '{{ `{{ .values.namespace }}` }}'

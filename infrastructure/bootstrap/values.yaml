@@ -2,6 +2,10 @@ environment: production
 
 domain: ""
 
+certificate:
+  issuer:
+    email: ""
+
 cluster:
   server: https://kubernetes.default.svc
 
