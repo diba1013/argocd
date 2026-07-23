@@ -1,0 +1,10 @@
+apiVersion: v2
+name: keda
+version: 1.0.0
+
+dependencies:
+  - repository: https://kubereboot.github.io/charts
+    name: kured
+    alias: kured
+    version: 6.1.0
+    condition: kured.enabled

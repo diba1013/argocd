@@ -1,0 +1,6 @@
+dependencies:
+- name: kured
+  repository: https://kubereboot.github.io/charts
+  version: 6.1.0
+digest: sha256:7d64eebee56c1381eedf55ec51a44a3d0ceeae365a811e49f53b9c37762ccc0a
+generated: "2026-07-23T19:38:32.103597002+02:00"

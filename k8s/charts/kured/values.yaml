@@ -1,0 +1,27 @@
+metadata:
+  namespace: kube-system
+
+kured:
+  enabled: true
+  configuration:
+    # Restart overnight as this is less critical.
+    startTime: "03:00"
+    endTime: "05:00"
+    timeZone: Europe/Berlin
+    # Since we do this outside of waking hours, we might as well see if a reboot may be happening overnight.
+    annotateNodes: true
+    concurrency: 1
+
+  # Allow running on tainted nodes as this is not included by default.
+  tolerations:
+    # Standard control-plane taint (NoSchedule)
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+    # K3s specific CriticalAddonsOnly taint (NoExecute)
+    - key: CriticalAddonsOnly
+      operator: Exists
+      effect: NoExecute
+
+  metrics:
+    create: true

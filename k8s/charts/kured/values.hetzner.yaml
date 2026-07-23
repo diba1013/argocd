@@ -1,0 +1,6 @@
+metadata: {}
+
+kured:
+  # We only have limited amount of nodes, therefore drain will likely fail.
+  drainTimeout: 5m
+  forceReboot: true
