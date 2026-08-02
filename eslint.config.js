@@ -5,7 +5,7 @@ export default defineConfig({
 	typescript: "./tsconfig.json",
 	configs: [
 		{
-			files: ["infrastructure/*/templates/*.yaml", "k8s/charts/*/templates/*.yaml"],
+			files: ["infrastructure/*/templates/*.yaml", "cluster/**/templates/*.yaml"],
 			rules: {
 				/**
 				 * Do not complain about go templating not evaluating to a value.
@@ -15,5 +15,5 @@ export default defineConfig({
 			},
 		},
 	],
-	ignores: ["k8s/data/**", "infrastructure/*/templates/*.yaml", "k8s/charts/*/templates/*.yaml"],
+	ignores: ["scripts/*", "k8s/data/**", "infrastructure/*/templates/*.yaml", "cluster/**/templates/*.yaml"],
 });

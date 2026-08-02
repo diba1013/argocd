@@ -10,7 +10,7 @@ spec:
         repoURL: {{ .Values.repository.url }}
         revision: {{ .Values.repository.branch }}
         files:
-          - path: k8s/charts/*/values.yaml
+          - path: cluster/operators/*/values.yaml
         values:
           name: '{{ `{{ (get .metadata "name") | default (index .path.segments 2) }}` }}'
           namespace: '{{ `{{ (get .metadata "namespace" ) | default (index .path.segments 2) }}` }}'

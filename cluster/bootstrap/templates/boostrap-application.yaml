@@ -8,7 +8,7 @@ spec:
   project: default
   source:
     repoURL: {{ .Values.repository.url }}
-    path: infrastructure/bootstrap
+    path: cluster/bootstrap
     targetRevision: {{ .Values.repository.branch }}
     helm:
       ignoreMissingValueFiles: true
