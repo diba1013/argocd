@@ -14,8 +14,8 @@
 	"type": "module",
 	"scripts": {
 		"prepare": "husky",
-		"lint": "eslint .",
-		"lint:fix": "eslint --fix ."
+		"lint": "prettier --check . && eslint .",
+		"lint:fix": "prettier --write . && eslint --fix ."
 	},
 	"devDependencies": {
 		"@commitlint/cli": "21.2.1",
