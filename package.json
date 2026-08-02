@@ -7,7 +7,7 @@
 		"url": "git://github.com/diba1013/argocd.git"
 	},
 	"author": "diba1013",
-	"packageManager": "pnpm@10.20.0",
+	"packageManager": "pnpm@11.18.0",
 	"engines": {
 		"node": ">=23.6.0"
 	},
@@ -18,16 +18,16 @@
 		"lint:fix": "eslint --fix ."
 	},
 	"devDependencies": {
-		"@commitlint/cli": "^20.1.0",
-		"@commitlint/config-conventional": "^20.0.0",
-		"@diba1013/linter": "^0.16.0",
-		"@types/node": "^24.9.2",
-		"eslint": "^9.39.0",
-		"husky": "^9.1.7",
-		"lint-staged": "^16.2.6",
-		"prettier": "^3.6.2",
-		"read": "^5.0.1",
-		"typescript": "^5.9.3",
-		"zx": "^8.8.5"
+		"@commitlint/cli": "21.2.1",
+		"@commitlint/config-conventional": "21.2.0",
+		"@diba1013/linter": "0.19.1",
+		"@types/node": "26.1.2",
+		"eslint": "10.8.0",
+		"husky": "9.1.7",
+		"lint-staged": "17.3.0",
+		"prettier": "3.9.6",
+		"read": "6.0.0",
+		"typescript": "6.0.3",
+		"zx": "8.8.5"
 	}
 }
