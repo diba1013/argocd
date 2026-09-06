@@ -2,3 +2,4 @@ pnpm-lock.yaml
 # Ignore all templated helm chart files.
 cluster/**/templates/*.yaml
 infrastructure/*/templates/*.yaml
+services/*/templates/*.yaml

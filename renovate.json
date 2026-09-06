@@ -1,0 +1,46 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": ["github>diba1013/renovate-config:recommended", "schedule:monthly"],
+	"helm-values": {
+		"managerFilePatterns": ["/(^|/)values([.-].+)?\\.ya?ml$/"]
+	},
+	"customManagers": [
+		{
+			"customType": "regex",
+			"description": "ArgoCD kustomize manifest version",
+			"managerFilePatterns": ["/infrastructure/argocd/overlays/.+/kustomization\\.yaml$/"],
+			"matchStrings": ["raw\\.githubusercontent\\.com/argoproj/argo-cd/v(?<currentValue>[^/]+)/manifests"],
+			"datasourceTemplate": "github-tags",
+			"depNameTemplate": "argoproj/argo-cd",
+			"versioningTemplate": "semver"
+		},
+		{
+			"customType": "regex",
+			"description": "Dependencies with renovate hints in YAML",
+			"managerFilePatterns": ["/(^|\\/)(infrastructure|services|cluster)\\/.+\\.ya?ml$/"],
+			"matchStrings": [
+				"# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)(?: versioning=(?<versioning>\\S+))?\\s+image: [\"']?[^:]+:(?<currentValue>[^@\"'\\s]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?[\"']?",
+				"# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)(?: versioning=(?<versioning>\\S+))?\\s+tag:\\s*(?<currentValue>[^@\"'\\s]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?"
+			]
+		}
+	],
+	"packageRules": [
+		{
+			"description": "Batch toolchain dependencies",
+			"matchManagers": ["npm", "nvm"],
+			"groupName": "toolchain"
+		},
+		{
+			"description": "Batch infrastructure dependency updates",
+			"matchManagers": ["helmv3", "helm-values", "kubernetes", "custom.regex"],
+			"matchFileNames": ["cluster/**", "services/**", "infrastructure/argocd/**"],
+			"groupName": "infrastructure"
+		},
+		{
+			"description": "Adhere to manual Immich compose pins (https://docs.immich.app/install/docker-compose) as postgres is not using an operator",
+			"matchPackageNames": ["ghcr.io/immich-app/postgres"],
+			"matchUpdateTypes": ["major"],
+			"enabled": false
+		}
+	]
+}

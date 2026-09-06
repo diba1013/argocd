@@ -1,3 +1,5 @@
+{{- $permissions := .Values.permissions }}
+{{- $postgres := .Values.postgres }}
 ---
 apiVersion: v1
 kind: Service
@@ -28,7 +30,7 @@ spec:
     spec:
       initContainers:
         - name: fix-permissions
-          image: busybox:latest
+          image: {{ printf "%s:%s" $permissions.image.repository $permissions.image.tag }}
           command:
             - sh
             - -c
@@ -47,7 +49,7 @@ spec:
               mountPath: /var/lib/postgresql/data
       containers:
         - name: postgres
-          image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:bcf63357191b76a916ae5eb93464d65c07511da41e3bf7a8416db519b40b1c23
+          image: {{ printf "%s:%s" $postgres.image.repository $postgres.image.tag }}
           env:
             - name: POSTGRES_INITDB_ARGS
               value: "--data-checksums"

@@ -10,13 +10,6 @@ secrets:
   POSTGRES_DATABASE_NAME: "AgCE/OOHfegm9MZS179uJQVIkuKGtgYfKIbQWbMt4WTazyIU6DbJRMsd92WmSQcv+SbN14+DcFUrYJo1u50pKvT3REvnlk15H+Ta+fKPL2fnKt51aAuF3AYOLjB3THZy84bdkvm0+DCCQoXPJTi3FHMF6+8e+gu1L7iZjRF+cFcLlIrsIpbRNAMtM5uIR296SwrOcwKT3q9EVYbqwopmsrizp9c+9pfufTQS1T0D6iQJ6F9ox9n1otoqdlVItWBNNNrkOVaiAT3kiaNqTyEQIXVaYWyayHxCEp96xVmOMCqUYhgwCB/+ropC2aIrrMtujVGhoLtYCWOp12iOC1jYyiYlMsclJ8YJ3rECWrbQ4cpV2TXRLXL6sqfpfc4xCkikneL9BSLeDZ82oF0dLz4I4YhtBQjVSm105OwdN9tkJyHEM5bMdjNcMUmwMaaryjHI03RkRq6IzNjlPTawU73mSMJ0HIG0gck8ElK/Ypv3a33UHgyGFOwa6589hZIdPL9kg9woeinGMtU6Ssb1dDmc1ccJO28P27o9lcg4HmITyI75V77Xo5RHokUKIh4CeW+vbv4BpqVYowSKNLJ8DMKZUoW5sNrIHYa3yIVZ5vir3vlD9+g8mjguzs4i3289baiF4pzryJY5zlbhys0/Kz8+OqXtyLTTgvPH2LKWSNYsSBOiTnMt4vmR2LoeXQ+dnANOhWK3yKGupvg="
 
 immich:
-  controllers:
-    main:
-      containers:
-        main:
-          image:
-            tag: v3.1.0
-
   immich:
     metrics:
       enabled: true

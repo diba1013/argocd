@@ -17,7 +17,7 @@ registry:
 
   image:
     repository: ghcr.io/project-zot/zot
-    tag: v2.1.18
+    tag: v2.1.18@sha256:6f7bf2b8e43437c7c3a121bc80214845c85f27321e66f2ff4be6bf4220775fd7
 
   replicas: 1
   args:
