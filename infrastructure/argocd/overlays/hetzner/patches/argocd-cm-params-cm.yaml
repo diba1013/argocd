@@ -4,3 +4,5 @@ metadata:
   name: argocd-cmd-params-cm
 data:
   server.insecure: "true"
+  # Use the API server's schema when calculating diffs preventing bundled client-side diffs.
+  controller.diff.server.side: "true"
