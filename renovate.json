@@ -26,15 +26,17 @@
 	],
 	"packageRules": [
 		{
-			"description": "Batch toolchain dependencies",
+			"description": "Batch toolchain dependencies (including major)",
 			"matchManagers": ["npm", "nvm"],
-			"groupName": "toolchain"
+			"groupName": "toolchain",
+			"separateMajorMinor": false
 		},
 		{
-			"description": "Batch infrastructure dependency updates",
+			"description": "Batch infrastructure dependency updates (including major)",
 			"matchManagers": ["helmv3", "helm-values", "kubernetes", "custom.regex"],
 			"matchFileNames": ["cluster/**", "services/**", "infrastructure/argocd/**"],
-			"groupName": "infrastructure"
+			"groupName": "infrastructure",
+			"separateMajorMinor": false
 		},
 		{
 			"description": "Adhere to manual Immich compose pins (https://docs.immich.app/install/docker-compose) as postgres is not using an operator",
