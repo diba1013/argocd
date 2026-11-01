@@ -14,7 +14,7 @@ spec:
             - -c
             - "until [ -f /var/run/argocd/argocd-cmp-server ]; do sleep 1; done; exec /var/run/argocd/argocd-cmp-server"
           # renovate: datasource=docker depName=library/node versioning=semver
-          image: library/node:24.21.0@sha256:5a750d3be5e5c80275f8c9a5367c3aed99c2875656590c8d0701c7ee687f5f0a
+          image: library/node:26.13.0@sha256:6c6f2679f5b655c7c6091a34b81372b5962ca9f25d897a501d613742f922567b
           restartPolicy: Always
           securityContext:
             runAsNonRoot: true
